@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+
+const cartSchema = new mongoose.Schema(
+  {
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "product"
+      }
+    ],
+    subtotal: {
+      type: Number,
+      required: true
+    }
+  },
+  { timestamps: true }
+);
+
+const Cart = mongoose.model("cart", cartSchema);
+
+module.exports = Cart;
