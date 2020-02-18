@@ -27,7 +27,9 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
 
   const [stateSizes, setStateSizes] = useState({
     sizes: product
-      ? product.sizes.map(sizeElement => ({ ...sizeElement, key: uuid() }))
+      ? product.sizes.length !== 0
+        ? product.sizes.map(sizeElement => ({ ...sizeElement, key: uuid() }))
+        : [{ size: "", quantity: "", key: uuid() }]
       : [{ size: "", quantity: "", key: uuid() }]
   });
 
@@ -72,7 +74,7 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
   const handleUpdate = () => {
     productInfo.imageUrl = product.imageUrl;
     if (productInfo.price.length > 0) {
-      productInfo.price = Number(productInfo.price);
+      productInfo.price = parseFloat(productInfo.price);
     }
 
     const sizesArray = [...sizes];
@@ -91,12 +93,12 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
     const sizesArray = [...sizes];
     sizesArray.forEach(sizeElement => {
       delete sizeElement.key;
-      sizeElement.quantity = Number(sizeElement.quantity);
+      sizeElement.quantity = parseInt(sizeElement.quantity);
     });
 
     const editedProductInfo = {
       ...productInfo,
-      price: Number(productInfo.price),
+      price: parseFloat(productInfo.price),
       sizes: sizesArray
     };
     addProduct(editedProductInfo);
@@ -172,6 +174,7 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
           sizes={sizes}
           setStateSizes={setStateSizes}
         />
+
         {productErrors.sizes && <ErrorMessage message={productErrors.sizes} />}
         <div className="group">
           <label htmlFor="price">Price £</label>

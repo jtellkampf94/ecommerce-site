@@ -55,9 +55,12 @@ const Header = ({
           )}
 
           {currentAdmin ? (
-            <Link to="/admin/login" onClick={adminSignOutStart}>
-              ADMIN SIGN OUT
-            </Link>
+            <React.Fragment>
+              <Link to="/admin/products">ADMIN DASHBOARD</Link>
+              <Link to="/admin/login" onClick={adminSignOutStart}>
+                ADMIN SIGN OUT
+              </Link>
+            </React.Fragment>
           ) : (
             <Link to="/admin/login">ADMIN LOG IN</Link>
           )}

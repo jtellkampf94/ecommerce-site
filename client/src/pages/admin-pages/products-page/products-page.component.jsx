@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { Link } from "react-router-dom";
 
 import ProductCollection from "../../../components/product-collection/product-collection.component";
 import Pagination from "../../../components/pagination/pagination.component";
@@ -29,6 +30,9 @@ const AdminProducts = ({ fetchProducts, products, admin }) => {
   return (
     <div className="log-in-and-register">
       {admin ? <h5>Welcome back {admin.firstName}</h5> : null}
+      <Link to="/admin/add-product">
+        <button>+ Add Product</button>
+      </Link>
       <h1>Products</h1>
       {products ? <ProductCollection products={products.results} /> : null}
       {products ? (

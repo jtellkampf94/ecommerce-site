@@ -12,7 +12,6 @@ import {
   addAdminProductFailure,
   fetchProductsStart,
   adminDeleteProductFailure,
-  adminUpdateProductSuccess,
   adminUpdateProductFailure
 } from "./product.actions";
 
@@ -45,7 +44,6 @@ export function* fetchProduct({ payload: productId }) {
     const { data: product } = yield axios.get(
       `/api/products/product/${productId}`
     );
-    console.log(product);
     yield put(fetchProductSuccess(product));
   } catch (error) {
     yield put(fetchProductFailure(error));
@@ -76,7 +74,7 @@ export function* addProduct({ payload: productInfo }) {
       });
       const token = localStorage.getItem("adminJwtToken");
       setAuthToken(token);
-      yield put(fetchProductsStart());
+      yield put(fetchProductsStart(1, 8));
       history.push("/admin/products");
     }
   } catch (error) {
@@ -87,7 +85,8 @@ export function* addProduct({ payload: productInfo }) {
 export function* adminDeleteProduct({ payload: productId }) {
   try {
     yield axios.delete(`/api/products/product/${productId}`);
-    yield put(fetchProductsStart());
+    yield put(fetchProductsStart(1, 8));
+    history.push("/admin/products");
   } catch (error) {
     yield put(adminDeleteProductFailure(error));
   }
@@ -109,22 +108,14 @@ export function* adminUpdateProduct({ payload }) {
       const token = localStorage.getItem("adminJwtToken");
       setAuthToken(token);
 
-      const { data: updatedProduct } = yield axios.put(
-        `/api/products/product/${payload.productId}`,
-        product
-      );
-      // yield put(adminUpdateProductSuccess(updatedProduct));
-      yield put(fetchProductsStart());
+      yield axios.put(`/api/products/product/${payload.productId}`, product);
+      yield put(fetchProductsStart(1, 8));
       history.push("/admin/products");
     } else {
       const product = { ...payload.product };
       delete product.file;
-      const { data: updatedProduct } = yield axios.put(
-        `/api/products/product/${payload.productId}`,
-        product
-      );
-      // yield put(adminUpdateProductSuccess(updatedProduct));
-      yield put(fetchProductsStart());
+      yield axios.put(`/api/products/product/${payload.productId}`, product);
+      yield put(fetchProductsStart(1, 8));
       history.push("/admin/products");
     }
   } catch (error) {
