@@ -19,7 +19,6 @@ import {
 const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
   const [productInfo, setProductInfo] = useState({
     name: product ? product.name : "",
-    size: product ? (product.size ? product.size : "") : "",
     description: product ? product.description : "",
     file: null,
     price: product ? product.price.toString() : "",
@@ -32,7 +31,7 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
       : [{ size: "", quantity: "", key: uuid() }]
   });
 
-  const { name, size, description, category, file, price } = productInfo;
+  const { name, description, category, file, price } = productInfo;
   const { sizes } = stateSizes;
   const categories = [
     "mens",
@@ -100,8 +99,7 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
       price: Number(productInfo.price),
       sizes: sizesArray
     };
-    console.log(editedProductInfo);
-    // addProduct(editedProductInfo);
+    addProduct(editedProductInfo);
   };
 
   return (
@@ -116,15 +114,6 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
           required
         />
         {productErrors.name && <ErrorMessage message={productErrors.name} />}
-        <FormInput
-          name="size"
-          type="text"
-          value={size}
-          handleChange={handleChange}
-          label="Product size"
-          required
-        />
-        {productErrors.size && <ErrorMessage message={productErrors.size} />}
         <div className="group">
           <label htmlFor="description">Product Description</label>
           <textarea

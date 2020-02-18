@@ -174,11 +174,13 @@ exports.updateProduct = async (req, res, next) => {
     if (!isValid) return res.status(422).json(errors);
 
     if (product.imageUrl === req.body.imageUrl) {
-      // console.log(sanitizedData);
-      await product.update(sanitizedData);
-      await product.save();
-      console.log(product);
-      return res.status(200).json(product);
+      sanitizedData.adminId = admin._id;
+      const updatedProduct = await Product.findOneAndUpdate(
+        { _id: req.params.productId },
+        sanitizedData,
+        { new: true, overwrite: true }
+      );
+      return res.status(200).json(updatedProduct);
     } else {
       const url = product.imageUrl;
       const key = url.slice(55, url.length);
@@ -194,9 +196,13 @@ exports.updateProduct = async (req, res, next) => {
 
       s3.deleteObject(params, async (err, data) => {
         if (Object.entries(data).length === 0) {
-          await product.update(sanitizedData);
-          await product.save();
-          return res.status(200).json(product);
+          sanitizedData.adminId = admin._id;
+          const updatedProduct = await Product.findOneAndUpdate(
+            { _id: req.params.productId },
+            sanitizedData,
+            { new: true, overwrite: true }
+          );
+          return res.status(200).json(updatedProduct);
         }
       });
     }
