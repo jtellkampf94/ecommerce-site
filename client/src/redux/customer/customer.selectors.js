@@ -7,7 +7,12 @@ export const selectCurrentCustomer = createSelector(
   customer => customer.currentCustomer
 );
 
-export const selectCustomerErrors = createSelector(
+export const selectCustomerLoginErrors = createSelector(
   [selectCustomer],
-  customer => customer.error
+  customer => customer.loginError
+);
+
+export const selectCustomerRegisterErrors = createSelector(
+  [selectCustomer],
+  customer => customer.registerError
 );

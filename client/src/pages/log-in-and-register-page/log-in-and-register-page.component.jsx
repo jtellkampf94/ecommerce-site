@@ -5,25 +5,38 @@ import { createStructuredSelector } from "reselect";
 import Register from "../../components/register/register.component";
 import LogIn from "../../components/log-in/log-in.component";
 
-import { selectCustomerErrors } from "../../redux/customer/customer.selectors";
-import { emailSignInStart } from "../../redux/customer/customer.actions";
+import {
+  selectCustomerLoginErrors,
+  selectCustomerRegisterErrors
+} from "../../redux/customer/customer.selectors";
+import {
+  emailSignInStart,
+  customerRegisterStart
+} from "../../redux/customer/customer.actions";
 
-const LogInAndRegisterPage = ({ emailSignInStart, customerErrors }) => {
+const LogInAndRegisterPage = ({
+  emailSignInStart,
+  register,
+  customerLoginErrors,
+  customerRegisterErrors
+}) => {
   return (
     <div className="log-in-and-register">
-      <LogIn emailSignInStart={emailSignInStart} errors={customerErrors} />
-      <Register />
+      <LogIn emailSignInStart={emailSignInStart} errors={customerLoginErrors} />
+      <Register register={register} errors={customerRegisterErrors} />
     </div>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
-  customerErrors: selectCustomerErrors
+  customerLoginErrors: selectCustomerLoginErrors,
+  customerRegisterErrors: selectCustomerRegisterErrors
 });
 
 const mapDispatchToProps = dispatch => ({
   emailSignInStart: (email, password) =>
-    dispatch(emailSignInStart({ email, password }))
+    dispatch(emailSignInStart({ email, password })),
+  register: credentials => dispatch(customerRegisterStart(credentials))
 });
 
 export default connect(

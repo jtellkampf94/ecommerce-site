@@ -94,8 +94,13 @@ module.exports = validateAdminRegister = data => {
     }
   }
 
-  if (!dateOfBirth instanceof Date) {
-    errors.dateOfBirth = "Please enter valid date of birth";
+  if (Validator.isEmpty(dateOfBirth)) {
+    errors.dateOfBirth = "Please enter date of birth";
+  } else {
+    dateOfBirth = new Date(dateOfBirth);
+    if (!(dateOfBirth instanceof Date)) {
+      errors.dateOfBirth = "Please enter valid date of birth";
+    }
   }
 
   if (typeof securityCode !== "string") {

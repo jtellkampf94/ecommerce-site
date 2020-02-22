@@ -38,14 +38,11 @@ const Register = ({ register, admin, errors = {} }) => {
   const handleSubmit = e => {
     e.preventDefault();
     const submitCredentials = { ...credentials };
-    if (admin) {
-      submitCredentials.dateOfBirth = new Date(submitCredentials.dateOfBirth);
-      if (submitCredentials.gender.length === 1) {
-        submitCredentials.gender = submitCredentials.gender[0];
-        console.log(submitCredentials.gender);
-      }
+
+    if (submitCredentials.gender.length === 1) {
+      submitCredentials.gender = submitCredentials.gender[0];
+      console.log(submitCredentials.gender);
     }
-    console.log(submitCredentials);
 
     register(submitCredentials);
   };
@@ -99,34 +96,30 @@ const Register = ({ register, admin, errors = {} }) => {
         {errors.confirmPassword && (
           <ErrorMessage message={errors.confirmPassword} />
         )}
-        {admin && (
-          <FormInput
-            type="date"
-            name="dateOfBirth"
-            value={dateOfBirth}
-            onChange={handleChange}
-            label="Date Of Birth"
-          />
-        )}
+        <FormInput
+          type="date"
+          name="dateOfBirth"
+          value={dateOfBirth}
+          onChange={handleChange}
+          label="Date Of Birth"
+        />
         {errors.dateOfBirth && <ErrorMessage message={errors.dateOfBirth} />}
-        {admin && (
-          <CheckboxSection
-            state={credentials}
-            handleChange={e =>
-              handleCheckboxChange(
-                e,
-                gender,
-                setCredentials,
-                credentials,
-                "gender"
-              )
-            }
-            values={["male", "female"]}
-            name="gender"
-            title="Select your preference"
-            text="Please select one"
-          />
-        )}
+        <CheckboxSection
+          state={credentials}
+          handleChange={e =>
+            handleCheckboxChange(
+              e,
+              gender,
+              setCredentials,
+              credentials,
+              "gender"
+            )
+          }
+          values={["male", "female"]}
+          name="gender"
+          title="Select your preference"
+          text="Please select one"
+        />
         {errors.gender && <ErrorMessage message={errors.gender} />}
         {admin && (
           <FormInput

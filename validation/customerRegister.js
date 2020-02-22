@@ -11,21 +11,14 @@ module.exports = validateCustomerRegister = data => {
   const capitalLetterRegex = /[A-Z]/;
   const lowerCaseLetterRegex = /[a-z]/;
 
-  let {
-    firstName,
-    lastName,
-    email,
-    password,
-    dateOfBirth,
-    male,
-    female
-  } = data;
+  let { firstName, lastName, email, password, dateOfBirth, gender } = data;
 
   firstName = !isEmpty(firstName) ? firstName : "";
   lastName = !isEmpty(lastName) ? lastName : "";
   email = !isEmpty(email) ? email : "";
   password = !isEmpty(password) ? password : "";
   dateOfBirth = !isEmpty(dateOfBirth) ? dateOfBirth : "";
+  gender = !isEmpty(gender) ? gender : "";
 
   if (typeof firstName !== "string") {
     errors.firstName = "Please enter valid first name";
@@ -91,36 +84,29 @@ module.exports = validateCustomerRegister = data => {
     }
   }
 
-  if (typeof dateOfBirth !== "string") {
-    errors.dateOfBirth = "Please enter valid date of birth";
+  if (Validator.isEmpty(dateOfBirth)) {
+    errors.dateOfBirth = "Please enter date of birth";
   } else {
-    if (Validator.isEmpty(dateOfBirth)) {
-      errors.dateOfBirth = "Please enter your date of birth";
-    }
-
-    dateOfBirth = Validator.toDate(dateOfBirth);
-
-    if (!dateOfBirth instanceof Date) {
+    dateOfBirth = new Date(dateOfBirth);
+    if (!(dateOfBirth instanceof Date)) {
       errors.dateOfBirth = "Please enter valid date of birth";
     }
   }
 
-  if (typeof male !== "boolean" || typeof female !== "boolean") {
-    errors.gender = "Please enter valid preference";
+  if (typeof gender !== "string") {
+    errors.gender = "Please enter your preference";
   } else {
     if (
-      (male === true && female === true) ||
-      (male === false && female === false)
+      !(
+        (gender !== "male" && gender === "female") ||
+        (gender !== "female" && gender == "male")
+      )
     ) {
-      errors.gender = "Please select preference";
+      errors.gender = "Please enter your preference";
     }
 
-    if (male === true && female === false) {
-      sanitizedData.gender = "male";
-    }
-
-    if (male === false && female === true) {
-      sanitizedData.gender = "female";
+    if (Validator.isEmpty(gender)) {
+      errors.gender = "Please enter your preference";
     }
   }
 
@@ -129,6 +115,7 @@ module.exports = validateCustomerRegister = data => {
     sanitizedData.lastName = lastName;
     sanitizedData.email = email;
     sanitizedData.password = password;
+    sanitizedData.gender = gender;
     sanitizedData.dateOfBirth = dateOfBirth;
   }
 

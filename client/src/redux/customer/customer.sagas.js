@@ -1,6 +1,7 @@
 import { takeLatest, put, all, call } from "redux-saga/effects";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import history from "../../utils/history";
 
 import setAuthToken from "../../utils/setAuthToken";
 import CustomerActionTypes from "./customer.types";
@@ -8,10 +9,35 @@ import {
   signInFailure,
   signInSuccess,
   signOutSuccess,
-  signOutFailure
+  signOutFailure,
+  customerRegisterFailure,
+  customerRegisterSuccess
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
+
+export function* customerRegister({ payload: credentials }) {
+  try {
+    if (credentials.password !== credentials.confirmPassword) {
+      yield put(
+        customerRegisterFailure({ confirmPassword: "Passwords don't match" })
+      );
+    } else {
+      delete credentials.confirmPassword;
+      const {
+        data: { token }
+      } = yield axios.post("/api/auth/register", credentials);
+      localStorage.setItem("jwtToken", token);
+      setAuthToken(token);
+      const decodedCustomer = jwtDecode(token);
+      const { state } = history.location;
+      yield put(customerRegisterSuccess(decodedCustomer));
+      state ? history.push(state.from.pathname) : history.push("/");
+    }
+  } catch (error) {
+    yield put(customerRegisterFailure(error.response.data));
+  }
+}
 
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
@@ -76,10 +102,18 @@ export function* onSignOutStart() {
   yield takeLatest(CustomerActionTypes.SIGN_OUT_START, signOut);
 }
 
+export function* onCustomerRegister() {
+  yield takeLatest(
+    CustomerActionTypes.CUSTOMER_REGISTER_START,
+    customerRegister
+  );
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
     call(onCheckUserSession),
+    call(onCustomerRegister),
     call(onSignOutStart)
   ]);
 }
