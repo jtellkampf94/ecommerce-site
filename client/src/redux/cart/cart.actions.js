@@ -1,8 +1,18 @@
 import cartActionTypes from "./cart.types";
 
-export const addProductToCart = product => ({
-  type: cartActionTypes.ADD_PRODUCT_TO_CART,
+export const addProductToCartStart = product => ({
+  type: cartActionTypes.ADD_PRODUCT_TO_CART_START,
   payload: product
+});
+
+export const addProductToCartSuccess = product => ({
+  type: cartActionTypes.ADD_PRODUCT_TO_CART_SUCCESS,
+  payload: product
+});
+
+export const addProductToCartFailure = error => ({
+  type: cartActionTypes.ADD_PRODUCT_TO_CART_FAILURE,
+  payload: error
 });
 
 export const removeProductFromCart = productId => ({

@@ -1,19 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import uuid from "uuid/v1";
 
 import Modal from "../modal/modal.component";
 
-const AddedToCart = ({ id, product, closeModal }) => {
+const AddedToCart = ({ id, product, closeModal, size }) => {
   const renderContent = () => {
     return (
       <React.Fragment>
         <span>{product.name}</span>
-        <span>Size UK {product.size}</span>
-        {product.category.map(cg => (
-          <span key={uuid()}>{cg}</span>
-        ))}
-        <img src={product.imageUrl} alt={product.name} />
+        <span>Size UK {size}</span>
+        {/* <img src={product.imageUrl} alt={product.name} /> */}
       </React.Fragment>
     );
   };

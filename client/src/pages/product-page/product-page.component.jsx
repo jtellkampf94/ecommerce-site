@@ -6,9 +6,11 @@ import { fetchProductStart } from "../../redux/product/product.actions";
 import { selectCurrentProduct } from "../../redux/product/product.selectors";
 import { selectViewModal } from "../../redux/ui/ui.selectors";
 import { showModal, closeModal } from "../../redux/ui/ui.actions";
-import { addProductToCart } from "../../redux/cart/cart.actions";
+import { addProductToCartStart } from "../../redux/cart/cart.actions";
+import { selectCartErrors } from "../../redux/cart/cart.selectors";
 
 import AddedToCart from "../../components/added-to-cart/added-to-cart.component";
+import ErrorMessage from "../../components/error-message/error-message.component";
 
 import "./product-page.styles.css";
 
@@ -19,33 +21,35 @@ const ProductPage = ({
   showModal,
   closeModal,
   viewModal,
-  addProductToCart
+  addProductToCart,
+  cartErrors = {}
 }) => {
-  const [productDetails, setProductDetails] = useState({ prod: "", size: "" });
+  const [productSize, setProductSize] = useState({ size: "" });
 
-  const { prod, size } = productDetails;
+  const { size } = productSize;
 
   useEffect(() => {
     fetchProduct(match.params.productId);
   }, [match.params.productId]);
 
-  useEffect(() => {
-    if (product) {
-      setProductDetails({ ...productDetails, prod: product });
-    }
-  }, [product]);
-
   const handleAddToCart = () => {
-    addProductToCart(product);
+    const productDetailsForCart = {
+      _id: product._id,
+      name: product.name,
+      imageUrl: product.imageUrl,
+      price: product.price,
+      size
+    };
+    addProductToCart(productDetailsForCart);
     showModal();
   };
 
   const handleSetSize = e => {
     const selectedSize = e.target.getAttribute("name");
     if (size === selectedSize) {
-      setProductDetails({ ...productDetails, size: "" });
+      setProductSize({ size: "" });
     } else {
-      setProductDetails({ ...productDetails, size: selectedSize });
+      setProductSize({ size: selectedSize });
     }
   };
 
@@ -60,6 +64,7 @@ const ProductPage = ({
           <div className="size-section">
             {product.sizes.map(sizeElement => {
               const props = {
+                key: sizeElement._id,
                 className: `size-box ${parseInt(sizeElement.quantity) === 0 &&
                   "out-of-stock"} ${sizeElement.size === size &&
                   "size-selected"}`,
@@ -77,30 +82,33 @@ const ProductPage = ({
               );
             })}
           </div>
+          {cartErrors.size && <ErrorMessage message={cartErrors.size} />}
           <button onClick={handleAddToCart}>Add to cart</button>
         </div>
       )}
-      {viewModal && (
+      {viewModal && Object.entries(cartErrors).length === 0 ? (
         <AddedToCart
           id={match.params.id}
           product={product}
+          size={size}
           closeModal={closeModal}
         />
-      )}
+      ) : null}
     </div>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
   product: selectCurrentProduct,
-  viewModal: selectViewModal
+  viewModal: selectViewModal,
+  cartErrors: selectCartErrors
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchProduct: productId => dispatch(fetchProductStart(productId)),
   closeModal: () => dispatch(closeModal()),
   showModal: id => dispatch(showModal(id)),
-  addProductToCart: product => dispatch(addProductToCart(product))
+  addProductToCart: product => dispatch(addProductToCartStart(product))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);
