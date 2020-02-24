@@ -8,7 +8,7 @@ import LogInAndRegisterPage from "./pages/log-in-and-register-page/log-in-and-re
 import AdminLogInAndRegisterPage from "./pages/admin-pages/login-and-register-page/log-in-and-register-page.component";
 import CategoryPage from "./pages/category-page/category-page.component";
 import ProductPage from "./pages/product-page/product-page.component";
-import CheckoutPage from "./pages/checkout-page/checkout-page.component";
+import CartPage from "./pages/cart-page/cart-page.component";
 import Header from "./components/header/header.component";
 import AdminProducts from "./pages/admin-pages/products-page/products-page.component";
 import EditProduct from "./pages/admin-pages/edit-product/edit-product.component";
@@ -44,7 +44,7 @@ const App = ({ checkAdminSignedIn, currentCustomer, currentAdmin }) => {
           path="/products/product/:productId"
           component={ProductPage}
         />
-        <Route exact path="/checkout" component={CheckoutPage} />
+        <Route exact path="/cart" component={CartPage} />
         <Route
           exact
           path="/admin/login"

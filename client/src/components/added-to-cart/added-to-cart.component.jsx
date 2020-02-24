@@ -18,7 +18,7 @@ const AddedToCart = ({ id, product, closeModal, size }) => {
     return (
       <React.Fragment>
         <button onClick={closeModal}>Continue shopping</button>
-        <Link to="/checkout">
+        <Link to="/cart">
           <button>Go to checkout</button>
         </Link>
       </React.Fragment>
