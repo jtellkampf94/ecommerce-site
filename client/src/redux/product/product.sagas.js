@@ -4,6 +4,7 @@ import setAuthToken from "../../utils/setAuthToken";
 import history from "../../utils/history";
 
 import ProductActionTypes from "./product.types";
+import { closeModal } from "../ui/ui.actions";
 import {
   fetchProductsSuccess,
   fetchProductSuccess,
@@ -85,6 +86,7 @@ export function* addProduct({ payload: productInfo }) {
 export function* adminDeleteProduct({ payload: productId }) {
   try {
     yield axios.delete(`/api/products/product/${productId}`);
+    yield put(closeModal());
     yield put(fetchProductsStart(1, 8));
     history.push("/admin/products");
   } catch (error) {

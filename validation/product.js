@@ -54,21 +54,32 @@ module.exports = validateProduct = data => {
   if (typeof price === "string" && Validator.isEmpty(price)) {
     errors.price = "Please enter the price of the product";
   } else {
-    if (typeof price !== "number") {
+    if (typeof price !== "string") {
       errors.price = "Please enter valid product price";
     }
+
+    if (isNaN(parseFloat(price))) {
+      errors.price = "Please enter valid product price";
+    }
+
+    price = parseFloat(price);
   }
 
   if (sizes.length === 0) {
     errors.sizes = "Please enter a size and quantity of product";
   } else {
     sizes.forEach(sizeElement => {
-      if (typeof sizeElement.quantity !== "number") {
+      if (typeof sizeElement.quantity !== "string") {
+        errors.sizes = "Please enter a valid quantity of the size";
+      }
+      if (isNaN(parseInt(sizeElement.quantity))) {
         errors.sizes = "Please enter a valid quantity of the size";
       }
       if (isEmpty(sizeElement.quantity)) {
         errors.sizes = "Please enter a quantity of the size";
       }
+
+      sizeElement.quantity = parseInt(sizeElement.quantity);
       if (typeof sizeElement.size !== "string") {
         errors.sizes = "Please enter a valid size";
       }

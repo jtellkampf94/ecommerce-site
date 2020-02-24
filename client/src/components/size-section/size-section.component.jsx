@@ -4,7 +4,7 @@ import uuid from "uuid/v1";
 const SizeSection = ({ handleChange, sizes, setStateSizes }) => {
   const handleIncrementSection = () => {
     setStateSizes({
-      sizes: [...sizes, { size: "", quantity: "", key: uuid() }]
+      sizes: [...sizes, { size: "", quantity: "", identityKey: uuid() }]
     });
   };
 
@@ -21,20 +21,19 @@ const SizeSection = ({ handleChange, sizes, setStateSizes }) => {
       {sizes && (
         <React.Fragment>
           {sizes.map(size => {
-            const { key, size: sz, quantity } = size;
-
+            const { identityKey, size: sz, quantity } = size;
             return (
-              <div key={key}>
+              <div key={identityKey}>
                 <label>Size</label>
                 <input
-                  onChange={e => handleChange(e, key)}
+                  onChange={e => handleChange(e, identityKey)}
                   type="text"
                   name="size"
                   value={sz}
                 />
                 <label>Quantity</label>
                 <input
-                  onChange={e => handleChange(e, key)}
+                  onChange={e => handleChange(e, identityKey)}
                   type="number"
                   name="quantity"
                   value={quantity}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import uuid from "uuid/v1";
@@ -8,34 +8,20 @@ import CustomButton from "../custom-button/custom-button.component";
 import CheckboxSection from "../checkbox-section/checkbox-section.component";
 import ErrorMessage from "../error-message/error-message.component";
 import SizeSection from "../size-section/size-section.component";
+import DeleteProduct from "../delete-product/delete-product.component";
 
 import handleCheckboxChange from "../../utils/handleCheckboxChange";
 import { selectProductErrors } from "../../redux/product/product.selectors";
+import { selectViewModal } from "../../redux/ui/ui.selectors";
 import {
   addAdminProductStart,
-  adminUpdateProductStart
+  adminUpdateProductStart,
+  adminDeleteProductStart
 } from "../../redux/product/product.actions";
+import { showModal, closeModal } from "../../redux/ui/ui.actions";
 
-const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
-  const [productInfo, setProductInfo] = useState({
-    name: product ? product.name : "",
-    description: product ? product.description : "",
-    file: null,
-    price: product ? product.price.toString() : "",
-    category: product ? product.category : []
-  });
-
-  const [stateSizes, setStateSizes] = useState({
-    sizes: product
-      ? product.sizes.length !== 0
-        ? product.sizes.map(sizeElement => ({ ...sizeElement, key: uuid() }))
-        : [{ size: "", quantity: "", key: uuid() }]
-      : [{ size: "", quantity: "", key: uuid() }]
-  });
-
-  const { name, description, category, file, price } = productInfo;
-  const { sizes } = stateSizes;
-  const categories = [
+const CATEGORY_DATA = {
+  categories: [
     "mens",
     "womens",
     "hats",
@@ -44,10 +30,56 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
     "clothing",
     "gym & training",
     "running"
-  ];
-  const categorySectionTitle = "Product Category";
-  const categorySectionText =
-    "Please check the category this product belongs to, you may check more than one category";
+  ],
+  categorySectionTitle: "Product Category",
+  categorySectionText:
+    "Please check the category this product belongs to, you may check more than one category"
+};
+
+const ProductForm = ({
+  addProduct,
+  updateProduct,
+  product,
+  productErrors,
+  viewModal,
+  deleteProduct,
+  showModal,
+  closeModal
+}) => {
+  const [productInfo, setProductInfo] = useState({
+    name: "",
+    description: "",
+    file: null,
+    imageUrl: "",
+    price: product ? product.price.toString() : "",
+    category: product ? product.category : []
+  });
+
+  const [stateSizes, setStateSizes] = useState({
+    sizes: [{ size: "", quantity: "", identityKey: uuid() }]
+  });
+
+  useEffect(() => {
+    if (product) {
+      setProductInfo({
+        name: product.name,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price.toString(),
+        category: product.category
+      });
+      setStateSizes({
+        sizes: product.sizes.map(sizeElement => ({
+          size: sizeElement.size,
+          quantity: sizeElement.quantity.toString(),
+          identityKey: uuid()
+        }))
+      });
+    }
+  }, [product]);
+
+  const { name, description, category, price } = productInfo;
+  const { sizes } = stateSizes;
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -58,11 +90,11 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
     setProductInfo({ ...productInfo, file: e.target.files[0] });
   };
 
-  const handleSizesSectionChange = (e, key) => {
+  const handleSizesSectionChange = (e, identityKey) => {
     const { name, value } = e.target;
     const sizesArray = [...sizes];
     const newSizesArray = sizesArray.map(sizeElement => {
-      if (sizeElement.key === key) {
+      if (sizeElement.identityKey === identityKey) {
         return { ...sizeElement, [name]: value };
       } else {
         return { ...sizeElement };
@@ -72,34 +104,20 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
   };
 
   const handleUpdate = () => {
-    productInfo.imageUrl = product.imageUrl;
-    if (productInfo.price.length > 0) {
-      productInfo.price = parseFloat(productInfo.price);
-    }
-
-    const sizesArray = [...sizes];
-    sizesArray.forEach(sizeElement => {
-      delete sizeElement.key;
-      sizeElement.quantity = parseInt(sizeElement.quantity);
-    });
-
-    productInfo.sizes = sizesArray;
-    console.log(productInfo);
-    updateProduct(productInfo, product._id);
+    const updateProductInfo = {
+      ...productInfo,
+      sizes: sizes.map(el => ({ size: el.size, quantity: el.quantity }))
+    };
+    console.log(updateProductInfo);
+    updateProduct(updateProductInfo, product._id);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    const sizesArray = [...sizes];
-    sizesArray.forEach(sizeElement => {
-      delete sizeElement.key;
-      sizeElement.quantity = parseInt(sizeElement.quantity);
-    });
 
     const editedProductInfo = {
       ...productInfo,
-      price: parseFloat(productInfo.price),
-      sizes: sizesArray
+      sizes: sizes.map(el => ({ size: el.size, quantity: el.quantity }))
     };
     addProduct(editedProductInfo);
   };
@@ -161,10 +179,10 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
               "category"
             )
           }
-          values={categories}
+          values={CATEGORY_DATA.categories}
           name="category"
-          title={categorySectionTitle}
-          text={categorySectionText}
+          title={CATEGORY_DATA.categorySectionTitle}
+          text={CATEGORY_DATA.categorySectionText}
         />
         {productErrors.category && (
           <ErrorMessage message={productErrors.category} />
@@ -191,12 +209,27 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
         {productErrors.error && <ErrorMessage message={productErrors.error} />}
         <div className="buttons">
           {product ? (
-            <CustomButton type="button" onClick={handleUpdate}>
-              Edit
-            </CustomButton>
+            <React.Fragment>
+              <CustomButton type="button" onClick={handleUpdate}>
+                Edit
+              </CustomButton>
+              <CustomButton type="button" onClick={showModal}>
+                Delete
+              </CustomButton>
+            </React.Fragment>
           ) : (
             <CustomButton type="submit"> Add Product </CustomButton>
           )}
+          {product ? (
+            viewModal ? (
+              <DeleteProduct
+                id={product._id}
+                deleteProduct={deleteProduct}
+                name={product.name}
+                closeModal={closeModal}
+              />
+            ) : null
+          ) : null}
         </div>
       </form>
     </div>
@@ -204,13 +237,17 @@ const ProductForm = ({ addProduct, updateProduct, product, productErrors }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  productErrors: selectProductErrors
+  productErrors: selectProductErrors,
+  viewModal: selectViewModal
 });
 
 const mapDispatchToProps = dispatch => ({
   addProduct: prodInfo => dispatch(addAdminProductStart(prodInfo)),
   updateProduct: (product, productId) =>
-    dispatch(adminUpdateProductStart(product, productId))
+    dispatch(adminUpdateProductStart(product, productId)),
+  closeModal: () => dispatch(closeModal()),
+  showModal: () => dispatch(showModal()),
+  deleteProduct: productId => dispatch(adminDeleteProductStart(productId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductForm);
