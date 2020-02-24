@@ -1,0 +1,26 @@
+.size-section {
+  display: flex;
+}
+.size-box {
+  outline: solid black 3px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  padding: 3px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.size-selected {
+  background: black;
+  color: white;
+}
+
+.out-of-stock {
+  outline: solid grey 3px;
+  color: grey;
+}
+
+.out-of-stock:hover {
+  cursor: default;
+}
