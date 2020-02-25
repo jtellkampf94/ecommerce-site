@@ -1,0 +1,8 @@
+.cart-icon {
+  border: 3px solid black;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 0;
+  padding: 3px;
+  vertical-align: top;
+}

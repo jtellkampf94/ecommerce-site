@@ -3,6 +3,8 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { selectCartItems } from "../../redux/cart/cart.selectors";
 
+import CartPageItem from "../../components/cart-page-item/cart-page-item.component";
+
 const CartPage = ({ cartItems }) => {
   return (
     <div>
@@ -12,22 +14,14 @@ const CartPage = ({ cartItems }) => {
           <tr>
             <th></th>
             <th>Item</th>
-            <th>Price</th>
+            <th>Size</th>
             <th>Quantity</th>
+            <th>Price</th>
           </tr>
         </thead>
         <tbody>
           {cartItems
-            ? cartItems.map(item => (
-                <tr key={item._id}>
-                  <td>
-                    <img src={item.imageUrl} alt={item.name} />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>1</td>
-                </tr>
-              ))
+            ? cartItems.map(item => <CartPageItem key={item._id} item={item} />)
             : null}
         </tbody>
       </table>

@@ -19,3 +19,7 @@ export const removeProductFromCart = productId => ({
   type: cartActionTypes.REMOVE_PRODUCT_FROM_CART,
   payload: productId
 });
+
+export const toggleCartHidden = () => ({
+  type: cartActionTypes.TOGGLE_CART_HIDDEN
+});

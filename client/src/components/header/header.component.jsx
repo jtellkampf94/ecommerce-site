@@ -7,21 +7,23 @@ import { selectCurrentCustomer } from "../../redux/customer/customer.selectors";
 import { signOutStart } from "../../redux/customer/customer.actions";
 import { selectCurrentAdmin } from "../../redux/admin/admin.selectors";
 import { adminSignOutStart } from "../../redux/admin/admin.actions";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
+
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 
 const Header = ({
   currentCustomer,
   currentAdmin,
   signOutStart,
-  adminSignOutStart
+  adminSignOutStart,
+  cartHidden
 }) => {
   return (
     <nav>
       <div className="container">
         <div className="header__logo-container">{/* <Logo /> */}</div>
         <div className="header__navigation">
-          <a href="/" className="header__nav-link">
-            SHOP
-          </a>
           <Link to="/products/mens" className="header__nav-link">
             MENS
           </Link>
@@ -43,9 +45,8 @@ const Header = ({
           <Link to="/products/running" className="header__nav-link">
             RUNNING
           </Link>
-          <a href="/" className="header__nav-link">
-            CART
-          </a>
+          <CartIcon />
+          {!cartHidden && <CartDropdown />}
           {currentCustomer ? (
             <Link to="/" onClick={signOutStart}>
               SIGN OUT
@@ -70,7 +71,8 @@ const Header = ({
 
 const mapStateToProps = createStructuredSelector({
   currentCustomer: selectCurrentCustomer,
-  currentAdmin: selectCurrentAdmin
+  currentAdmin: selectCurrentAdmin,
+  cartHidden: selectCartHidden
 });
 
 const mapDispatchToProps = dispatch => ({

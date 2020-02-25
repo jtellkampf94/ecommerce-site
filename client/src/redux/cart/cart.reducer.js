@@ -2,7 +2,8 @@ import cartActionTypes from "./cart.types";
 
 const INITIAL_STATE = {
   cart: [],
-  error: {}
+  error: {},
+  hidden: true
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +17,8 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       };
     case cartActionTypes.ADD_PRODUCT_TO_CART_FAILURE:
       return { ...state, error: action.payload };
+    case cartActionTypes.TOGGLE_CART_HIDDEN:
+      return { ...state, hidden: !state.hidden };
     default:
       return state;
   }
