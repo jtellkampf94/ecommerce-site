@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartItem = ({ item: { imageUrl, name, size, price } }) => {
+const CartDropdownItem = ({ item: { imageUrl, name, size, price } }) => {
   return (
     <div className="cart-item">
       {/* <img src={imageUrl} alt="" /> */}
@@ -15,4 +15,4 @@ const CartItem = ({ item: { imageUrl, name, size, price } }) => {
   );
 };
 
-export default CartItem;
+export default CartDropdownItem;

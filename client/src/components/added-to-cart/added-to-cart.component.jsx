@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
+import history from "../../utils/history";
 import Modal from "../modal/modal.component";
 
 const AddedToCart = ({ id, product, closeModal, size }) => {
@@ -18,9 +18,14 @@ const AddedToCart = ({ id, product, closeModal, size }) => {
     return (
       <React.Fragment>
         <button onClick={closeModal}>Continue shopping</button>
-        <Link to="/cart">
-          <button>Go to checkout</button>
-        </Link>
+        <button
+          onClick={() => {
+            history.push("/cart");
+            closeModal();
+          }}
+        >
+          Go to checkout
+        </button>
       </React.Fragment>
     );
   };

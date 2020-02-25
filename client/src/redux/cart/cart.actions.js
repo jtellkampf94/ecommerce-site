@@ -15,9 +15,14 @@ export const addProductToCartFailure = error => ({
   payload: error
 });
 
-export const removeProductFromCart = productId => ({
+export const removeProductFromCart = product => ({
   type: cartActionTypes.REMOVE_PRODUCT_FROM_CART,
-  payload: productId
+  payload: product
+});
+
+export const addCartProductQuantity = product => ({
+  type: cartActionTypes.ADD_CART_PRODUCT_QUANTITY,
+  payload: product
 });
 
 export const toggleCartHidden = () => ({

@@ -1,24 +1,29 @@
 import React from "react";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
+import uuid from "uuid/v1";
 
-import CartItem from "../cart-item/cart-item.component";
+import CartDropdownItem from "../cart-dropdown-item/cart-dropdown-item.component";
 
-import { selectCartItems } from "../../redux/cart/cart.selectors";
+import {
+  selectCartItems,
+  selectCartSubtotalPrice
+} from "../../redux/cart/cart.selectors";
 import { toggleCartHidden } from "../../redux/cart/cart.actions";
 
 import history from "../../utils/history";
 
-const CartDropdown = ({ cartItems, toggleCartHidden }) => {
+const CartDropdown = ({ cartItems, toggleCartHidden, cartSubtotalPrice }) => {
   return (
     <div className="cart-dropdown">
       {cartItems.length > 0 ? (
         cartItems.map(cartItem => (
-          <CartItem key={cartItem._id} item={cartItem} />
+          <CartDropdownItem key={uuid()} item={cartItem} />
         ))
       ) : (
         <span>Cart is empty</span>
       )}
+      <span>Subtotal: £{cartSubtotalPrice.toFixed(2)}</span>
       <button
         onClick={() => {
           history.push("/cart");
@@ -32,7 +37,8 @@ const CartDropdown = ({ cartItems, toggleCartHidden }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  cartItems: selectCartItems
+  cartItems: selectCartItems,
+  cartSubtotalPrice: selectCartSubtotalPrice
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -86,14 +86,16 @@ const ProductPage = ({
           <button onClick={handleAddToCart}>Add to cart</button>
         </div>
       )}
-      {viewModal && Object.entries(cartErrors).length === 0 ? (
-        <AddedToCart
-          id={match.params.id}
-          product={product}
-          size={size}
-          closeModal={closeModal}
-        />
-      ) : null}
+      {viewModal && Object.entries(cartErrors).length === 0
+        ? product && (
+            <AddedToCart
+              id={match.params.id}
+              product={product}
+              size={size}
+              closeModal={closeModal}
+            />
+          )
+        : null}
     </div>
   );
 };
