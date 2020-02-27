@@ -19,7 +19,6 @@ const ProtectedRoute = ({
           if (!auth.getCurrentAdmin())
             return (
               <React.Fragment>
-                {console.log(props.location)}
                 <Redirect
                   to={{
                     pathname: "/admin/login",
@@ -34,7 +33,6 @@ const ProtectedRoute = ({
           if (!auth.getCurrentCustomer())
             return (
               <React.Fragment>
-                {console.log(props.location)}
                 <Redirect
                   to={{
                     pathname: "/login",

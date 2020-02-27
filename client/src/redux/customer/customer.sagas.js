@@ -50,7 +50,9 @@ export function* signInWithEmail({ payload: { email, password } }) {
     localStorage.setItem("jwtToken", token);
     setAuthToken(token);
     const decodedUser = jwtDecode(token);
+    const { state } = history.location;
     yield put(signInSuccess(decodedUser));
+    state ? history.push(state.from.pathname) : history.push("/");
   } catch (error) {
     yield put(signInFailure(error.response.data));
   }

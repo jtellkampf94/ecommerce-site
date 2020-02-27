@@ -6,14 +6,14 @@ import uuid from "uuid/v1";
 import {
   selectCartItems,
   selectCartSubtotalPrice
-} from "../../redux/cart/cart.selectors";
+} from "../../../redux/cart/cart.selectors";
 import {
   removeProductFromCart,
   addCartProductQuantity
-} from "../../redux/cart/cart.actions";
+} from "../../../redux/cart/cart.actions";
 
-import CartPageItem from "../../components/cart-page-item/cart-page-item.component";
-import OrderSummary from "../../components/order-summary/order-summary.component";
+import CartPageItem from "../../../components/cart-page-item/cart-page-item.component";
+import OrderSummary from "../../../components/order-summary/order-summary.component";
 
 const CartPage = ({
   cartItems,

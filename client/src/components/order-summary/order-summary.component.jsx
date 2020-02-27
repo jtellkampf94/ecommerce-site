@@ -25,7 +25,9 @@ const OrderSummary = ({ subtotal }) => {
           Total <span>£{total.toFixed(2)}</span>
         </div>
         <div>
-          <button onClick={() => history.push("/checkout")}>CHECKOUT</button>
+          <button onClick={() => history.push("/checkout")}>
+            CONTINUE TO CHECKOUT
+          </button>
         </div>
       </div>
     </div>

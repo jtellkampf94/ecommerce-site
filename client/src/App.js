@@ -8,8 +8,13 @@ import LogInAndRegisterPage from "./pages/log-in-and-register-page/log-in-and-re
 import AdminLogInAndRegisterPage from "./pages/admin-pages/login-and-register-page/log-in-and-register-page.component";
 import CategoryPage from "./pages/category-page/category-page.component";
 import ProductPage from "./pages/product-page/product-page.component";
-import CartPage from "./pages/cart-page/cart-page.component";
-import CheckoutPage from "./pages/checkout-page/checkout-page.component";
+import CartPage from "./pages/customer-pages/cart-page/cart-page.component";
+import CheckoutPage from "./pages/customer-pages/checkout-page/checkout-page.component";
+import MyAccountPage from "./pages/customer-pages/my-account-page/my-account-page.component";
+import AccountSettingsPage from "./pages/customer-pages/account-settings-page/account-settings-page";
+import OrdersPage from "./pages/customer-pages/orders-page/orders-page.component";
+import OrderPage from "./pages/customer-pages/order-page/order-page.component";
+import AddressesPage from "./pages/customer-pages/addresses-page/addresses-page.component";
 import Header from "./components/header/header.component";
 import AdminProducts from "./pages/admin-pages/products-page/products-page.component";
 import EditProduct from "./pages/admin-pages/edit-product/edit-product.component";
@@ -46,7 +51,42 @@ const App = ({ checkAdminSignedIn, currentCustomer, currentAdmin }) => {
           component={ProductPage}
         />
         <Route exact path="/cart" component={CartPage} />
-        <Route exact path="/checkout" component={CheckoutPage} />
+        <ProtectedRoute
+          exact
+          path="/checkout"
+          component={CheckoutPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/my-account"
+          component={MyAccountPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/my-account/settings"
+          component={AccountSettingsPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/my-account/orders"
+          component={OrdersPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/my-account/orders/:orderId"
+          component={OrderPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/my-account/addresses"
+          component={AddressesPage}
+          customer
+        />
         <Route
           exact
           path="/admin/login"
