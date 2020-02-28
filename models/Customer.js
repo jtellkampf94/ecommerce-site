@@ -26,23 +26,7 @@ const customerSchema = new mongoose.Schema(
     dateOfBirth: {
       type: Date,
       required: true
-    },
-    cart: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "cart"
-    },
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "order"
-      }
-    ],
-    customerAddresses: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "customerAddress"
-      }
-    ]
+    }
   },
   { timestamps: true }
 );

@@ -46,7 +46,7 @@ const AddressDetails = () => {
     const { name, value } = e.target;
     const apiKey = "KN55-WG91-TF96-JM18";
     const { data: addresses } = await axios.get(
-      `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Text=${value}&key=${apiKey}&Countries=GB,US,CA&Limit=5&Language=en`
+      `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Text=${value}&key=${apiKey}&Countries=GB&Limit=5&Language=en`
     );
     setAutomatedAddresses({
       ...automatedAddresses,

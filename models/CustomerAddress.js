@@ -30,8 +30,12 @@ const customerAddressSchema = new mongoose.Schema(
       required: true
     },
     phoneNumber: {
-      type: Number,
+      type: String,
       required: true
+    },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "customer"
     }
   },
   { timestamps: true }
