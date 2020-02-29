@@ -32,11 +32,6 @@ export const fetchProductSuccess = product => ({
   payload: product
 });
 
-export const adminUpdateProductSuccess = product => ({
-  type: ProductActionTypes.ADMIN_UPDATE_PRODUCT_SUCCESS,
-  payload: product
-});
-
 export const fetchProductsFailure = error => ({
   type: ProductActionTypes.FETCH_PRODUCTS_FAILURE,
   payload: error
@@ -56,11 +51,6 @@ export const addAdminProductStart = productInfo => ({
   type: ProductActionTypes.ADD_ADMIN_PRODUCT_START,
   payload: productInfo
 });
-
-// export const addAdminProductSuccess = product => ({
-//   type: ProductActionTypes.ADD_ADMIN_PRODUCT_SUCCESS,
-//   payload: product
-// });
 
 export const addAdminProductFailure = error => ({
   type: ProductActionTypes.ADD_ADMIN_PRODUCT_FAILURE,

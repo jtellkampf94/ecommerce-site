@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import uuid from "uuid/v1";
 import axios from "axios";
 
-const AddressDetails = () => {
+const AddressForm = () => {
   const [automatedAddresses, setAutomatedAddresses] = useState({
     typed: "",
     listOfAutomatedAddresses: [],
@@ -191,10 +191,10 @@ const AddressDetails = () => {
             value={phoneNumber}
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">SAVE AND CONTINUE</button>
       </form>
     </div>
   );
 };
 
-export default AddressDetails;
+export default AddressForm;

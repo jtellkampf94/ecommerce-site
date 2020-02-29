@@ -7,11 +7,12 @@ import adminReducer from "./admin/admin.reducer";
 import productReducer from "./product/product.reducer";
 import uiReducer from "./ui/ui.reducer";
 import cartReducer from "./cart/cart.reducer";
+import addressReducer from "./address/address.reducer";
 
 const persistConfig = {
   key: "root",
-  storage
-  // whitelist: ["cart"]
+  storage,
+  whitelist: ["cart"]
 };
 
 const rootReducer = combineReducers({
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   admin: adminReducer,
   product: productReducer,
   ui: uiReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  address: addressReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

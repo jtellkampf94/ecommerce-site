@@ -2,7 +2,7 @@ import React from "react";
 
 import history from "../../utils/history";
 
-const OrderSummary = ({ subtotal }) => {
+const OrderSummary = ({ subtotal, checkout }) => {
   const deliveryCharge = subtotal > 50 ? 0.0 : 3.49;
   let total;
   subtotal === 0 ? (total = 0) : (total = subtotal + deliveryCharge);
@@ -24,11 +24,13 @@ const OrderSummary = ({ subtotal }) => {
         <div>
           Total <span>£{total.toFixed(2)}</span>
         </div>
-        <div>
-          <button onClick={() => history.push("/checkout")}>
-            CONTINUE TO CHECKOUT
-          </button>
-        </div>
+        {!checkout && (
+          <div>
+            <button onClick={() => history.push("/checkout")}>
+              CONTINUE TO CHECKOUT
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

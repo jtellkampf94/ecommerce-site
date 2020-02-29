@@ -16,7 +16,6 @@ const productReducer = (state = INITIAL_STATE, action) => {
         error: {}
       };
     case ProductActionTypes.FETCH_PRODUCT_SUCCESS:
-    case ProductActionTypes.ADMIN_UPDATE_PRODUCT_SUCCESS:
       return {
         ...state,
         products: null,
