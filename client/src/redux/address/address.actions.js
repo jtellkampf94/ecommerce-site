@@ -34,6 +34,11 @@ export const addCustomerAddressStart = address => ({
   payload: address
 });
 
+export const addCustomerAddressSuccess = address => ({
+  type: addressActionTypes.ADD_CUSTOMER_ADDRESS_SUCCESS,
+  payload: address
+});
+
 export const addCustomerAddressFailure = error => ({
   type: addressActionTypes.ADD_CUSTOMER_ADDRESS_FAILURE,
   payload: error

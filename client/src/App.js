@@ -26,12 +26,18 @@ import "./App.css";
 import { checkAdminSignedIn } from "./redux/admin/admin.actions";
 import { selectCurrentCustomer } from "./redux/customer/customer.selectors";
 import { selectCurrentAdmin } from "./redux/admin/admin.selectors";
-import { adminUpdateProductFailure } from "./redux/product/product.actions";
+import { checkCustomerLoggedIn } from "./redux/customer/customer.actions";
 
-const App = ({ checkAdminSignedIn, currentCustomer, currentAdmin }) => {
+const App = ({
+  checkAdminSignedIn,
+  checkCustomerLoggedIn,
+  currentCustomer,
+  currentAdmin
+}) => {
   useEffect(() => {
     checkAdminSignedIn();
-  }, [checkAdminSignedIn]);
+    checkCustomerLoggedIn();
+  }, [checkAdminSignedIn, checkCustomerLoggedIn]);
   return (
     <div>
       <Header />
@@ -127,7 +133,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkAdminSignedIn: () => dispatch(checkAdminSignedIn())
+  checkAdminSignedIn: () => dispatch(checkAdminSignedIn()),
+  checkCustomerLoggedIn: () => dispatch(checkCustomerLoggedIn())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

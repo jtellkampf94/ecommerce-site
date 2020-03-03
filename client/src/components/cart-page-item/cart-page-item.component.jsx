@@ -2,6 +2,7 @@ import React from "react";
 
 const CartPageItem = ({ item, removeFromCart, addCartQuantity }) => {
   const { name, imageUrl, size, quantity, price } = item;
+  const overallPrice = price * quantity;
   return (
     <div>
       <div>
@@ -14,7 +15,7 @@ const CartPageItem = ({ item, removeFromCart, addCartQuantity }) => {
         {quantity}
         <button onClick={() => addCartQuantity(item)}>+</button>
       </div>
-      <div>£{price}</div>
+      <div>£{overallPrice.toFixed(2)}</div>
     </div>
   );
 };

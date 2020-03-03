@@ -2,10 +2,20 @@ import React from "react";
 
 import history from "../../utils/history";
 
-const OrderSummary = ({ subtotal, checkout }) => {
-  const deliveryCharge = subtotal > 50 ? 0.0 : 3.49;
+const OrderSummary = ({ subtotal, checkout, deliveryPrice }) => {
+  let deliveryCharge;
+  deliveryPrice
+    ? (deliveryCharge = parseFloat(deliveryPrice))
+    : (deliveryCharge = 3.49);
+  console.log(deliveryCharge);
+  deliveryCharge === 3.49 && subtotal > 50
+    ? (deliveryCharge = 0.0)
+    : (deliveryCharge = deliveryCharge);
+  console.log(deliveryCharge);
+
   let total;
   subtotal === 0 ? (total = 0) : (total = subtotal + deliveryCharge);
+
   return (
     <div className="summary">
       <div className="summary-header">
@@ -16,7 +26,7 @@ const OrderSummary = ({ subtotal, checkout }) => {
           Subtotal <span>£{subtotal.toFixed(2)}</span>
         </div>
         <div>
-          Estimated Delivery & Handling <small>Free for orders over £50</small>{" "}
+          Delivery Charge
           <span>£{deliveryCharge}</span>
         </div>
       </div>

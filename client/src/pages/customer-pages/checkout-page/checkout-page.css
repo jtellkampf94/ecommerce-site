@@ -1,0 +1,7 @@
+.address-display {
+  cursor: pointer;
+}
+
+.selected {
+  background: #eee;
+}

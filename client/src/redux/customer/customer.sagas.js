@@ -58,7 +58,7 @@ export function* signInWithEmail({ payload: { email, password } }) {
   }
 }
 
-export function* isUserAuthenticated() {
+export function* isCustomerAuthenticated() {
   try {
     if (localStorage.jwtToken) {
       const decodedUser = jwtDecode(localStorage.jwtToken);
@@ -92,7 +92,7 @@ export function* signOut() {
 export function* onCheckUserSession() {
   yield takeLatest(
     CustomerActionTypes.CHECK_CUSTOMER_IS_LOGGED_IN,
-    isUserAuthenticated
+    isCustomerAuthenticated
   );
 }
 

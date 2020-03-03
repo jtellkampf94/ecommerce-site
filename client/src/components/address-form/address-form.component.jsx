@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 import uuid from "uuid/v1";
 import axios from "axios";
 
-const AddressForm = () => {
+import ErrorMessage from "../error-message/error-message.component";
+
+import { addCustomerAddressStart } from "../../redux/address/address.actions";
+import { selectAddressErrors } from "../../redux/address/address.selectors";
+
+const AddressForm = ({ addAddress, errors }) => {
   const [automatedAddresses, setAutomatedAddresses] = useState({
     typed: "",
     listOfAutomatedAddresses: [],
@@ -19,6 +26,15 @@ const AddressForm = () => {
     email: "",
     phoneNumber: ""
   });
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setAutomatedAddresses({
+        ...automatedAddresses,
+        toggleToManualAddresses: true
+      });
+    }
+  }, [errors]);
 
   const {
     firstName,
@@ -56,7 +72,6 @@ const AddressForm = () => {
   };
 
   const handleSelectedAddress = automatedAddress => {
-    console.log("hi");
     const {
       Text: addressFirstLine,
       Description: description
@@ -78,7 +93,7 @@ const AddressForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(address);
+    addAddress(address);
   };
 
   return (
@@ -94,6 +109,7 @@ const AddressForm = () => {
             value={firstName}
           />
         </div>
+        {errors.firstName && <ErrorMessage message={errors.firstName} />}
         <div className="form-group">
           <label htmlFor="lastName">Last Name*</label>
           <input
@@ -104,6 +120,7 @@ const AddressForm = () => {
             value={lastName}
           />
         </div>
+        {errors.lastName && <ErrorMessage message={errors.lastName} />}
         {toggleToManualAddresses ? (
           <React.Fragment>
             <div className="form-group">
@@ -116,6 +133,9 @@ const AddressForm = () => {
                 value={addressFirstLine}
               />
             </div>
+            {errors.addressFirstLine && (
+              <ErrorMessage message={errors.addressFirstLine} />
+            )}
             <div className="form-group">
               <label htmlFor="townOrCity">Town/City*</label>
               <input
@@ -126,6 +146,7 @@ const AddressForm = () => {
                 value={townOrCity}
               />
             </div>
+            {errors.townOrCity && <ErrorMessage message={errors.townOrCity} />}
             <div className="form-group">
               <label htmlFor="county">County</label>
               <input
@@ -136,6 +157,7 @@ const AddressForm = () => {
                 value={county}
               />
             </div>
+            {errors.county && <ErrorMessage message={errors.county} />}
             <div className="form-group">
               <label htmlFor="postCode">Post Code*</label>
               <input
@@ -146,6 +168,7 @@ const AddressForm = () => {
                 value={postCode}
               />
             </div>
+            {errors.postCode && <ErrorMessage message={errors.postCode} />}
             <p onClick={handleToggleAddressManually}>Search your Address</p>
           </React.Fragment>
         ) : (
@@ -181,6 +204,7 @@ const AddressForm = () => {
             value={email}
           />
         </div>
+        {errors.email && <ErrorMessage message={errors.email} />}
         <div className="form-group">
           <label htmlFor="phoneNumber">Phone Number*</label>
           <input
@@ -191,10 +215,19 @@ const AddressForm = () => {
             value={phoneNumber}
           />
         </div>
+        {errors.phoneNumber && <ErrorMessage message={errors.phoneNumber} />}
         <button type="submit">SAVE AND CONTINUE</button>
       </form>
     </div>
   );
 };
 
-export default AddressForm;
+const mapStateToProps = createStructuredSelector({
+  errors: selectAddressErrors
+});
+
+const mapDispatchToProps = dispatch => ({
+  addAddress: address => dispatch(addCustomerAddressStart(address))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

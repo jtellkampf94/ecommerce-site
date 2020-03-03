@@ -11,6 +11,7 @@ import {
   fetchCustomerAddressesFailure,
   fetchCustomerAddressSuccess,
   fetchCustomerAddressFailure,
+  addCustomerAddressSuccess,
   addCustomerAddressFailure,
   deleteCustomerAddressFailure,
   updateCustomerAddressFailure
@@ -38,9 +39,9 @@ export function* fetchAddress({ payload: addressId }) {
 
 export function* addAddress({ payload: address }) {
   try {
-    yield axios.post("/api/addresses", address);
+    const { data: savedAddress } = yield axios.post("/api/addresses", address);
+    yield put(addCustomerAddressSuccess(savedAddress));
     yield put(fetchCustomerAddressesStart());
-    history.push("/");
   } catch (error) {
     yield put(addCustomerAddressFailure(error.response.data));
   }

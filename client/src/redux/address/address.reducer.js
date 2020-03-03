@@ -1,7 +1,7 @@
 import addressActionTypes from "./address.types";
 
 const INITIAL_STATE = {
-  addresses: null,
+  addresses: [],
   selectedAddress: null,
   error: {}
 };
@@ -11,14 +11,14 @@ const addressReducer = (state = INITIAL_STATE, action) => {
     case addressActionTypes.FETCH_CUSTOMER_ADDRESSES_SUCCESS:
       return {
         ...state,
-        addresses: action.payload,
         selectedAddress: null,
+        addresses: action.payload,
         error: {}
       };
     case addressActionTypes.FETCH_CUSTOMER_ADDRESS_SUCCESS:
+    case addressActionTypes.ADD_CUSTOMER_ADDRESS_SUCCESS:
       return {
         ...state,
-        addresses: null,
         selectedAddress: action.payload,
         error: {}
       };
