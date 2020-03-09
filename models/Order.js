@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    orderDetails: {
+    cartId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cart"
     },
-    address: {
+    addressId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "customerAddress"
     },
@@ -14,8 +14,16 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    totalPrice: {
+    subtotal: {
       type: Number,
+      required: true
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    deliverySpeed: {
+      type: String,
       required: true
     },
     dateDeliveryDue: {
@@ -24,6 +32,7 @@ const orderSchema = new mongoose.Schema(
     },
     delivered: {
       type: Boolean,
+      default: false,
       required: true
     }
   },

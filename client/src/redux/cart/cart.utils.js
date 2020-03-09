@@ -43,3 +43,14 @@ export const increaseCartItemQuantity = (currentCart, item) => {
       : cartItem
   );
 };
+
+export const mapDeliveryPriceToSpeed = deliveryPrice => {
+  switch (deliveryPrice) {
+    case 3.49:
+      return "Standard";
+    case 7.99:
+      return "Two Day";
+    case 11.99:
+      return "Next Day";
+  }
+};

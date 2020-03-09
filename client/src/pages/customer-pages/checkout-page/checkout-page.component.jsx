@@ -6,15 +6,21 @@ import OrderSummary from "../../../components/order-summary/order-summary.compon
 import AddressForm from "../../../components/address-form/address-form.component";
 import AddressDisplay from "../../../components/address-display/address-display.component";
 import DeliverySpeed from "../../../components/delivery-speed/delivery-speed.component";
+import StripeButton from "../../../components/stripe-button/stripe-button.component";
 
 import { selectCartSubtotalPrice } from "../../../redux/cart/cart.selectors";
 import {
   selectAddresses,
-  selectAddressErrors,
   selectCurrentAddress
 } from "../../../redux/address/address.selectors";
 import { fetchCustomerAddressesStart } from "../../../redux/address/address.actions";
 import { checkCustomerLoggedIn } from "../../../redux/customer/customer.actions";
+import { setDeliveryPrice } from "../../../redux/cart/cart.actions";
+import {
+  selectDeliveryPrice,
+  selectDeliverySpeed,
+  selectCartItems
+} from "../../../redux/cart/cart.selectors";
 
 import "./checkout-page.css";
 
@@ -23,7 +29,12 @@ const CheckoutPage = ({
   cartSubtotal,
   fetchAddresses,
   addresses,
-  currentAddress
+  currentAddress,
+  setDeliveryPrice,
+  deliveryPrice,
+  deliveryCharge,
+  selectedDeliverySpeed,
+  cartItems
 }) => {
   const [showAddressForm, toggleAddressForm] = useState(false);
 
@@ -69,9 +80,11 @@ const CheckoutPage = ({
   const handleSelectDeliveryPrice = (e, price) => {
     const { value, name } = e.target;
     setDeliverySpeed({ [name]: value, price });
+    setDeliveryPrice(price);
   };
 
   const { addressId } = selectedAddress;
+  const { speed, price } = deliverySpeed;
 
   return (
     <div className="checkout">
@@ -79,7 +92,8 @@ const CheckoutPage = ({
       <OrderSummary
         subtotal={cartSubtotal}
         checkout
-        deliveryPrice={deliverySpeed.price}
+        deliveryPrice={deliveryPrice}
+        deliveryCharge={deliveryCharge}
       />
       <div>
         <h5>Shipping</h5>
@@ -112,8 +126,17 @@ const CheckoutPage = ({
         )}
         {addressId && (
           <DeliverySpeed
-            speedSelected={deliverySpeed.speed}
+            speedSelected={speed}
             handleChange={handleSelectDeliveryPrice}
+          />
+        )}
+        {speed && price && (
+          <StripeButton
+            deliveryPrice={deliveryPrice}
+            addressId={addressId}
+            deliverySpeed={selectedDeliverySpeed}
+            cartItems={cartItems}
+            subtotal={cartSubtotal}
           />
         )}
       </div>
@@ -124,12 +147,16 @@ const CheckoutPage = ({
 const mapStateToProps = createStructuredSelector({
   cartSubtotal: selectCartSubtotalPrice,
   addresses: selectAddresses,
-  currentAddress: selectCurrentAddress
+  currentAddress: selectCurrentAddress,
+  deliveryPrice: selectDeliveryPrice,
+  selectedDeliverySpeed: selectDeliverySpeed,
+  cartItems: selectCartItems
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchAddresses: () => dispatch(fetchCustomerAddressesStart()),
-  checkCustomerLoggedIn: () => dispatch(checkCustomerLoggedIn())
+  checkCustomerLoggedIn: () => dispatch(checkCustomerLoggedIn()),
+  setDeliveryPrice: deliveryPrice => dispatch(setDeliveryPrice(deliveryPrice))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);

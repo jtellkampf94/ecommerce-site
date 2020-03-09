@@ -2,12 +2,15 @@ import cartActionTypes from "./cart.types";
 import {
   addItemToCart,
   removeItemFromCart,
-  increaseCartItemQuantity
+  increaseCartItemQuantity,
+  mapDeliveryPriceToSpeed
 } from "./cart.utils";
 
 const INITIAL_STATE = {
   cart: [],
   error: {},
+  deliveryPrice: null,
+  deliverySpeed: null,
   hidden: true
 };
 
@@ -35,6 +38,12 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return { ...state, error: action.payload };
     case cartActionTypes.TOGGLE_CART_HIDDEN:
       return { ...state, hidden: !state.hidden };
+    case cartActionTypes.SET_DELIVERY_PRICE:
+      return {
+        ...state,
+        deliveryPrice: action.payload,
+        deliverySpeed: mapDeliveryPriceToSpeed(action.payload)
+      };
     default:
       return state;
   }

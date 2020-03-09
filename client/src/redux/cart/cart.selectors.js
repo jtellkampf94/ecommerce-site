@@ -12,6 +12,16 @@ export const selectCartHidden = createSelector(
   cart => cart.hidden
 );
 
+export const selectDeliveryPrice = createSelector(
+  [selectCart],
+  cart => cart.deliveryPrice
+);
+
+export const selectDeliverySpeed = createSelector(
+  [selectCart],
+  cart => cart.deliverySpeed
+);
+
 export const selectCartItems = createSelector([selectCart], cart => cart.cart);
 
 export const selectCartItemsCount = createSelector(

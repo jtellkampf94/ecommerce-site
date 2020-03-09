@@ -7,11 +7,10 @@ const OrderSummary = ({ subtotal, checkout, deliveryPrice }) => {
   deliveryPrice
     ? (deliveryCharge = parseFloat(deliveryPrice))
     : (deliveryCharge = 3.49);
-  console.log(deliveryCharge);
+
   deliveryCharge === 3.49 && subtotal > 50
     ? (deliveryCharge = 0.0)
     : (deliveryCharge = deliveryCharge);
-  console.log(deliveryCharge);
 
   let total;
   subtotal === 0 ? (total = 0) : (total = subtotal + deliveryCharge);

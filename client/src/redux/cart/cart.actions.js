@@ -28,3 +28,8 @@ export const addCartProductQuantity = product => ({
 export const toggleCartHidden = () => ({
   type: cartActionTypes.TOGGLE_CART_HIDDEN
 });
+
+export const setDeliveryPrice = deliveryPrice => ({
+  type: cartActionTypes.SET_DELIVERY_PRICE,
+  payload: deliveryPrice
+});
