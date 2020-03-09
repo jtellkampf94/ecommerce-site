@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-const AddressDisplay = ({ address }) => {
+const AddressDisplay = ({ address, edit }) => {
   const {
     _id,
     firstName,
@@ -24,7 +24,7 @@ const AddressDisplay = ({ address }) => {
       <div>{postCode}</div>
       <div>{email}</div>
       <div>{phoneNumber}</div>
-      <button>EDIT</button>
+      {edit && <button>EDIT</button>}
     </div>
   );
 };

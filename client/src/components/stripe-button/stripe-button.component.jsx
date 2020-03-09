@@ -1,13 +1,17 @@
 import React from "react";
+import { connect } from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
+
+import { processPaymentStart } from "../../redux/order/order.actions";
 
 const StripeButton = ({
   subtotal,
   deliveryPrice,
   addressId,
   deliverySpeed,
-  cartItems
+  cartItems,
+  processPayment
 }) => {
   let deliveryCharge;
   deliveryPrice
@@ -22,17 +26,7 @@ const StripeButton = ({
   subtotal === 0 ? (total = 0) : (total = subtotal + deliveryCharge);
 
   const onToken = async token => {
-    try {
-      const { data } = await axios.post("/api/payment", {
-        token,
-        cartItems,
-        addressId,
-        deliverySpeed
-      });
-      console.log("hit", data);
-    } catch (err) {
-      console.log(err);
-    }
+    processPayment(token, cartItems, addressId, deliverySpeed);
   };
 
   return (
@@ -48,4 +42,9 @@ const StripeButton = ({
   );
 };
 
-export default StripeButton;
+const mapDispatchToProps = dispatch => ({
+  processPayment: (token, cartItems, addressId, deliverySpeed) =>
+    dispatch(processPaymentStart(token, cartItems, addressId, deliverySpeed))
+});
+
+export default connect(null, mapDispatchToProps)(StripeButton);

@@ -15,6 +15,7 @@ import AccountSettingsPage from "./pages/customer-pages/account-settings-page/ac
 import OrdersPage from "./pages/customer-pages/orders-page/orders-page.component";
 import OrderPage from "./pages/customer-pages/order-page/order-page.component";
 import AddressesPage from "./pages/customer-pages/addresses-page/addresses-page.component";
+import OrderSuccessPage from "./pages/customer-pages/order-success-page/order-success-page.component";
 import Header from "./components/header/header.component";
 import AdminProducts from "./pages/admin-pages/products-page/products-page.component";
 import EditProduct from "./pages/admin-pages/edit-product/edit-product.component";
@@ -61,6 +62,12 @@ const App = ({
           exact
           path="/checkout"
           component={CheckoutPage}
+          customer
+        />
+        <ProtectedRoute
+          exact
+          path="/order-success"
+          component={OrderSuccessPage}
           customer
         />
         <ProtectedRoute

@@ -108,7 +108,7 @@ const CheckoutPage = ({
                   addressId === address._id ? "selected" : null
                 }`}
               >
-                <AddressDisplay address={address} />
+                <AddressDisplay edit address={address} />
               </div>
             ))}
             <button onClick={handleClick}>ADD NEW ADDRESS</button>

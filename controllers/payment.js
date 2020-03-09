@@ -92,9 +92,9 @@ exports.postPayment = async (req, res, next) => {
       if (waitInDays === 1) i++;
     }
 
-    const order = await Order.create({
-      cartId: purchasedCart._id,
-      addressId,
+    let order = await Order.create({
+      cart: purchasedCart._id,
+      customerAddress: addressId,
       deliveryPrice,
       subtotal,
       total,
@@ -119,19 +119,14 @@ exports.postPayment = async (req, res, next) => {
 
     const updatedProducts = await Promise.all(updateProducts);
 
-    const address = await CustomerAddress.findById(addressId);
+    order = await Order.findById(order._id)
+      .populate("cart")
+      .populate("customerAddress")
+      .exec();
 
     return res.status(200).json({
       updatedProducts,
-      address,
-      dayDelivered,
-      order,
-      charge,
-      purchasedCart,
-      subtotal,
-      deliveryPrice,
-      deliverySpeed,
-      total
+      order
     });
   } catch (error) {
     console.log(error);

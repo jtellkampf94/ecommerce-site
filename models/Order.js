@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    cartId: {
+    cart: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cart"
     },
-    addressId: {
+    customerAddress: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "customerAddress"
     },
