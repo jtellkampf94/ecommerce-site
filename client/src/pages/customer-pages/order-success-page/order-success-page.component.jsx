@@ -16,7 +16,7 @@ const OrderSuccessPage = ({ currentOrder }) => {
         <React.Fragment>
           <h1>Your Order Has Been Successfull</h1>
           <h5>Your Order</h5>
-          {currentOrder.cart.map(cartItem => (
+          {currentOrder.cart.cart.map(cartItem => (
             <OrderItem key={cartItem._id} item={cartItem} />
           ))}
           <h5>Delivered To</h5>

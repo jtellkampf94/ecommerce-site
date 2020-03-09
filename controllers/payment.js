@@ -11,7 +11,10 @@ exports.postPayment = async (req, res, next) => {
   try {
     const { token, cartItems, addressId, deliverySpeed } = req.body;
 
-    const purchasedCart = await Cart.create({ cart: cartItems });
+    const purchasedCart = await Cart.create({
+      customer: req.user._id,
+      cart: cartItems
+    });
 
     let subtotalOfIndividualCartItem = cartItems.map(async item => {
       const product = await Product.findById(item._id);
@@ -95,6 +98,7 @@ exports.postPayment = async (req, res, next) => {
     let order = await Order.create({
       cart: purchasedCart._id,
       customerAddress: addressId,
+      customer: req.user._id,
       deliveryPrice,
       subtotal,
       total,
