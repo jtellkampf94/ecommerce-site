@@ -10,7 +10,6 @@ import CategoryPage from "./pages/category-page/category-page.component";
 import ProductPage from "./pages/product-page/product-page.component";
 import CartPage from "./pages/customer-pages/cart-page/cart-page.component";
 import CheckoutPage from "./pages/customer-pages/checkout-page/checkout-page.component";
-import MyAccountPage from "./pages/customer-pages/my-account-page/my-account-page.component";
 import AccountSettingsPage from "./pages/customer-pages/account-settings-page/account-settings-page";
 import OrdersPage from "./pages/customer-pages/orders-page/orders-page.component";
 import OrderPage from "./pages/customer-pages/order-page/order-page.component";
@@ -28,12 +27,14 @@ import { checkAdminSignedIn } from "./redux/admin/admin.actions";
 import { selectCurrentCustomer } from "./redux/customer/customer.selectors";
 import { selectCurrentAdmin } from "./redux/admin/admin.selectors";
 import { checkCustomerLoggedIn } from "./redux/customer/customer.actions";
+import { selectCurrentOrder } from "./redux/order/order.selectors";
 
 const App = ({
   checkAdminSignedIn,
   checkCustomerLoggedIn,
   currentCustomer,
-  currentAdmin
+  currentAdmin,
+  currentOrder
 }) => {
   useEffect(() => {
     checkAdminSignedIn();
@@ -67,13 +68,9 @@ const App = ({
         <ProtectedRoute
           exact
           path="/order-success"
-          component={OrderSuccessPage}
-          customer
-        />
-        <ProtectedRoute
-          exact
-          path="/my-account"
-          component={MyAccountPage}
+          render={() =>
+            currentOrder ? <OrderSuccessPage /> : <Redirect to="/checkout" />
+          }
           customer
         />
         <ProtectedRoute
@@ -136,7 +133,8 @@ const App = ({
 
 const mapStateToProps = createStructuredSelector({
   currentCustomer: selectCurrentCustomer,
-  currentAdmin: selectCurrentAdmin
+  currentAdmin: selectCurrentAdmin,
+  currentOrder: selectCurrentOrder
 });
 
 const mapDispatchToProps = dispatch => ({

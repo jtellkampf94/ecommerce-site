@@ -56,16 +56,7 @@ exports.postLogin = async (req, res, next) => {
       return res
         .status(422)
         .json({ emailOrPassword: "Your email or password is incorrect" });
-    const {
-      _id,
-      firstName,
-      lastName,
-      email,
-      gender,
-      cart,
-      orders,
-      customerAddresses
-    } = customer;
+    const { _id, firstName, lastName, email, gender, dateOfBirth } = customer;
     const token = jwt.sign(
       {
         _id,
@@ -73,9 +64,7 @@ exports.postLogin = async (req, res, next) => {
         lastName,
         email,
         gender,
-        cart,
-        orders,
-        customerAddresses
+        dateOfBirth
       },
       keys.jwtSecretKey
     );

@@ -5,6 +5,7 @@ import history from "../../utils/history";
 
 import orderActionTypes from "./order.types";
 import { processPaymentSuccess, processPaymentFailure } from "./order.actions";
+import { clearCart } from "../cart/cart.actions";
 
 //--------------WORKER-GENERATORS--------------//
 
@@ -13,6 +14,7 @@ export function* processPayment({ payload }) {
     const { data } = yield axios.post("/api/payment", payload);
     console.log(data);
     yield put(processPaymentSuccess(data.order));
+    yield put(clearCart());
     history.push("/order-success");
   } catch (error) {
     yield put(processPaymentFailure(error));

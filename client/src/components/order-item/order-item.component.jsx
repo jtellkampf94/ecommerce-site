@@ -1,13 +1,14 @@
 import React from "react";
 
 const OrderItem = ({ item }) => {
+  const { name, imageUrl, size, quantity, price } = item;
   return (
     <div>
-      <img src={item.imageUrl} alt={item.name} />
-      <div>{item.name}</div>
-      <div>Size UK {item.size}</div>
-      <div>Quantity: {item.quantity}</div>
-      <div>£{item.price}</div>
+      <img src={imageUrl} alt={name} />
+      <div>{name}</div>
+      <div>Size UK {isNaN(parseFloat(size)) ? size.toUpperCase() : size}</div>
+      <div>Quantity: {quantity}</div>
+      <div>£{price}</div>
     </div>
   );
 };

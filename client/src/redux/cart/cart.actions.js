@@ -33,3 +33,7 @@ export const setDeliveryPrice = deliveryPrice => ({
   type: cartActionTypes.SET_DELIVERY_PRICE,
   payload: deliveryPrice
 });
+
+export const clearCart = () => ({
+  type: cartActionTypes.CLEAR_CART
+});

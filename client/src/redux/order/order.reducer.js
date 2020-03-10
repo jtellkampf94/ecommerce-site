@@ -1,20 +1,30 @@
-import orderActionTypes from './order.types'
+import orderActionTypes from "./order.types";
 
 const INITIAL_STATE = {
-  currentOrder: {},
+  currentOrder: null,
   orders: [],
   error: null
-}
+};
 
-const orderReducer = (state = INITIAL_STATE, action) {
-  switch(action.type) {
+const orderReducer = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
     case orderActionTypes.PROCESS_PAYMENT_SUCCESS:
-      return {...state, currentOrder: action.payload, error: null}
+      return { ...state, currentOrder: action.payload, error: null };
     case orderActionTypes.PROCESS_PAYMENT_FAILURE:
-      return {...state, currentOrder: {}, orders: [], error:action.payload}
+      return {
+        ...state,
+        currentOrder: null,
+        orders: [],
+        error: action.payload
+      };
+    case orderActionTypes.CLEAR_PURCHASED_ORDER:
+      return {
+        ...state,
+        currentOrder: null
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default orderReducers
+export default orderReducer;

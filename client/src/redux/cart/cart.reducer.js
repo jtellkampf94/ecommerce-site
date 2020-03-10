@@ -44,6 +44,14 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         deliveryPrice: action.payload,
         deliverySpeed: mapDeliveryPriceToSpeed(action.payload)
       };
+    case cartActionTypes.CLEAR_CART:
+      return {
+        ...state,
+        cart: [],
+        error: {},
+        deliveryPrice: null,
+        deliverySpeed: null
+      };
     default:
       return state;
   }

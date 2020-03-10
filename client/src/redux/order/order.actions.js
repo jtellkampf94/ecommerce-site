@@ -19,3 +19,7 @@ export const processPaymentFailure = error => ({
   type: orderActionTypes.PROCESS_PAYMENT_FAILURE,
   payload: error
 });
+
+export const clearPurchasedOrder = () => ({
+  type: orderActionTypes.CLEAR_PURCHASED_ORDER
+});
