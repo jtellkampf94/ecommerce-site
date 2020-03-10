@@ -28,12 +28,13 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         error: {},
         cart: removeItemFromCart(state.cart, action.payload)
       };
-    case cartActionTypes.ADD_CART_PRODUCT_QUANTITY:
+    case cartActionTypes.ADD_CART_PRODUCT_QUANTITY_SUCCESS:
       return {
         ...state,
         error: {},
         cart: increaseCartItemQuantity(state.cart, action.payload)
       };
+    case cartActionTypes.ADD_CART_PRODUCT_QUANTITY_FAILURE:
     case cartActionTypes.ADD_PRODUCT_TO_CART_FAILURE:
       return { ...state, error: action.payload };
     case cartActionTypes.TOGGLE_CART_HIDDEN:

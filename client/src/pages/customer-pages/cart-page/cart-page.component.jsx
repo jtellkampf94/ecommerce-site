@@ -5,11 +5,12 @@ import uuid from "uuid/v1";
 
 import {
   selectCartItems,
-  selectCartSubtotalPrice
+  selectCartSubtotalPrice,
+  selectCartErrors
 } from "../../../redux/cart/cart.selectors";
 import {
   removeProductFromCart,
-  addCartProductQuantity
+  addCartProductQuantityStart
 } from "../../../redux/cart/cart.actions";
 
 import CartPageItem from "../../../components/cart-page-item/cart-page-item.component";
@@ -19,7 +20,8 @@ const CartPage = ({
   cartItems,
   cartSubtotalPrice,
   removeProductFromCart,
-  addCartProductQuantity
+  addCartProductQuantity,
+  cartErrors
 }) => {
   return (
     <div>
@@ -36,6 +38,7 @@ const CartPage = ({
           <div className="cart-page-body">
             {cartItems.map(item => (
               <CartPageItem
+                errors={cartErrors}
                 key={uuid()}
                 removeFromCart={removeProductFromCart}
                 addCartQuantity={addCartProductQuantity}
@@ -54,12 +57,14 @@ const CartPage = ({
 
 const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
-  cartSubtotalPrice: selectCartSubtotalPrice
+  cartSubtotalPrice: selectCartSubtotalPrice,
+  cartErrors: selectCartErrors
 });
 
 const mapDispatchToProps = dispatch => ({
   removeProductFromCart: product => dispatch(removeProductFromCart(product)),
-  addCartProductQuantity: product => dispatch(addCartProductQuantity(product))
+  addCartProductQuantity: (productId, item, quantity, size) =>
+    dispatch(addCartProductQuantityStart(productId, item, quantity, size))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartPage);

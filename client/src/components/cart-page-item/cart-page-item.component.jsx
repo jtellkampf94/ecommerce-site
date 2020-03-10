@@ -1,7 +1,9 @@
 import React from "react";
 
-const CartPageItem = ({ item, removeFromCart, addCartQuantity }) => {
-  const { name, imageUrl, size, quantity, price } = item;
+import ErrorMessage from "../error-message/error-message.component";
+
+const CartPageItem = ({ item, removeFromCart, addCartQuantity, errors }) => {
+  const { _id, name, imageUrl, size, quantity, price } = item;
   const overallPrice = price * quantity;
   return (
     <div>
@@ -13,7 +15,23 @@ const CartPageItem = ({ item, removeFromCart, addCartQuantity }) => {
       <div>
         <button onClick={() => removeFromCart(item)}>-</button>
         {quantity}
-        <button onClick={() => addCartQuantity(item)}>+</button>
+        <button
+          disabled={
+            errors.cartQuantityIncrement &&
+            errors.productId === _id &&
+            errors.size === size
+              ? true
+              : false
+          }
+          onClick={() => addCartQuantity(_id, item, quantity, size)}
+        >
+          +
+        </button>
+        {errors.cartQuantityIncrement &&
+        errors.productId === _id &&
+        errors.size === size ? (
+          <ErrorMessage message={errors.cartQuantityIncrement} />
+        ) : null}
       </div>
       <div>£{overallPrice.toFixed(2)}</div>
     </div>

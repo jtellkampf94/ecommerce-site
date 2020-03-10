@@ -20,9 +20,24 @@ export const removeProductFromCart = product => ({
   payload: product
 });
 
-export const addCartProductQuantity = product => ({
-  type: cartActionTypes.ADD_CART_PRODUCT_QUANTITY,
+export const addCartProductQuantityStart = (
+  productId,
+  item,
+  quantity,
+  size
+) => ({
+  type: cartActionTypes.ADD_CART_PRODUCT_QUANTITY_START,
+  payload: { productId, item, quantity, size }
+});
+
+export const addCartProductQuantitySuccess = product => ({
+  type: cartActionTypes.ADD_CART_PRODUCT_QUANTITY_SUCCESS,
   payload: product
+});
+
+export const addCartProductQuantityFailure = error => ({
+  type: cartActionTypes.ADD_CART_PRODUCT_QUANTITY_FAILURE,
+  payload: error
 });
 
 export const toggleCartHidden = () => ({
