@@ -3,13 +3,13 @@ import orderActionTypes from "./order.types";
 const INITIAL_STATE = {
   currentOrder: null,
   orders: [],
-  error: null
+  error: {}
 };
 
 const orderReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case orderActionTypes.PROCESS_PAYMENT_SUCCESS:
-      return { ...state, currentOrder: action.payload, error: null };
+      return { ...state, currentOrder: action.payload, error: {} };
     case orderActionTypes.PROCESS_PAYMENT_FAILURE:
       return {
         ...state,

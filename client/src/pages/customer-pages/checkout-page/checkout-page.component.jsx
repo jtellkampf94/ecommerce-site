@@ -7,6 +7,7 @@ import AddressForm from "../../../components/address-form/address-form.component
 import AddressDisplay from "../../../components/address-display/address-display.component";
 import DeliverySpeed from "../../../components/delivery-speed/delivery-speed.component";
 import StripeButton from "../../../components/stripe-button/stripe-button.component";
+import ErrorMessage from "../../../components/error-message/error-message.component";
 
 import { selectCartSubtotalPrice } from "../../../redux/cart/cart.selectors";
 import {
@@ -21,6 +22,7 @@ import {
   selectDeliverySpeed,
   selectCartItems
 } from "../../../redux/cart/cart.selectors";
+import { selectOrderErrors } from "../../../redux/order/order.selectors";
 
 import "./checkout-page.css";
 
@@ -34,7 +36,8 @@ const CheckoutPage = ({
   deliveryPrice,
   deliveryCharge,
   selectedDeliverySpeed,
-  cartItems
+  cartItems,
+  orderErrors
 }) => {
   const [showAddressForm, toggleAddressForm] = useState(false);
 
@@ -131,13 +134,16 @@ const CheckoutPage = ({
           />
         )}
         {speed && price && (
-          <StripeButton
-            deliveryPrice={deliveryPrice}
-            addressId={addressId}
-            deliverySpeed={selectedDeliverySpeed}
-            cartItems={cartItems}
-            subtotal={cartSubtotal}
-          />
+          <React.Fragment>
+            <StripeButton
+              deliveryPrice={deliveryPrice}
+              addressId={addressId}
+              deliverySpeed={selectedDeliverySpeed}
+              cartItems={cartItems}
+              subtotal={cartSubtotal}
+            />
+            {orderErrors.card && <ErrorMessage message={orderErrors.card} />}
+          </React.Fragment>
         )}
       </div>
     </div>
@@ -150,7 +156,8 @@ const mapStateToProps = createStructuredSelector({
   currentAddress: selectCurrentAddress,
   deliveryPrice: selectDeliveryPrice,
   selectedDeliverySpeed: selectDeliverySpeed,
-  cartItems: selectCartItems
+  cartItems: selectCartItems,
+  orderErrors: selectOrderErrors
 });
 
 const mapDispatchToProps = dispatch => ({

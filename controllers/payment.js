@@ -59,7 +59,12 @@ exports.postPayment = async (req, res, next) => {
       description: purchasedCart._id.toString()
     };
 
-    const charge = await stripe.charges.create(body);
+    try {
+      await stripe.charges.create(body);
+    } catch (error) {
+      purchasedCart.remove();
+      throw new Error(error);
+    }
 
     const now = new Date();
     let day = now.getDay();
@@ -132,7 +137,8 @@ exports.postPayment = async (req, res, next) => {
       updatedProducts,
       order
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };

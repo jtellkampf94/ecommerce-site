@@ -17,7 +17,7 @@ export function* processPayment({ payload }) {
     yield put(clearCart());
     history.push("/order-success");
   } catch (error) {
-    yield put(processPaymentFailure(error));
+    yield put(processPaymentFailure({ card: "Card payment failed" }));
   }
 }
 
