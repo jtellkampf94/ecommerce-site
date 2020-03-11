@@ -23,9 +23,27 @@ exports.postRegister = async (req, res, next) => {
           "A member with this email already exists. Please use another email address"
       });
     const newCustomer = await Customer.create(sanitizedData);
-    const { _id, firstName, lastName, email } = newCustomer;
+    const {
+      _id,
+      firstName,
+      lastName,
+      email,
+      gender,
+      dateOfBirth,
+      createdAt,
+      updatedAt
+    } = newCustomer;
     const token = jwt.sign(
-      { _id, firstName, lastName, email },
+      {
+        _id,
+        firstName,
+        lastName,
+        email,
+        gender,
+        dateOfBirth,
+        createdAt,
+        updatedAt
+      },
       keys.jwtSecretKey
     );
     return res.status(201).json({ token });
@@ -56,7 +74,16 @@ exports.postLogin = async (req, res, next) => {
       return res
         .status(422)
         .json({ emailOrPassword: "Your email or password is incorrect" });
-    const { _id, firstName, lastName, email, gender, dateOfBirth } = customer;
+    const {
+      _id,
+      firstName,
+      lastName,
+      email,
+      gender,
+      dateOfBirth,
+      createdAt,
+      updatedAt
+    } = customer;
     const token = jwt.sign(
       {
         _id,
@@ -64,7 +91,9 @@ exports.postLogin = async (req, res, next) => {
         lastName,
         email,
         gender,
-        dateOfBirth
+        dateOfBirth,
+        createdAt,
+        updatedAt
       },
       keys.jwtSecretKey
     );

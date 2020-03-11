@@ -11,7 +11,9 @@ import {
   signOutSuccess,
   signOutFailure,
   customerRegisterFailure,
-  customerRegisterSuccess
+  customerRegisterSuccess,
+  editCustomerDetailsSuccess,
+  editCustomerDetailsFailure
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
@@ -87,6 +89,22 @@ export function* signOut() {
   }
 }
 
+export function* editCustomerDetails({ payload }) {
+  const { customerId, customerDetails } = payload;
+  try {
+    const { data } = yield axios.put(
+      `/api/customer/${customerId}`,
+      customerDetails
+    );
+    localStorage.setItem("jwtToken", data.token);
+    setAuthToken(data.token);
+    yield put(editCustomerDetailsSuccess(data.updatedCustomer));
+    history.push("/my-account/settings");
+  } catch (error) {
+    yield put(editCustomerDetailsFailure(error.response.data));
+  }
+}
+
 //--------------WATCHER-GENERATORS--------------//
 
 export function* onCheckUserSession() {
@@ -111,11 +129,19 @@ export function* onCustomerRegister() {
   );
 }
 
+export function* onEditCustomerDetailsStart() {
+  yield takeLatest(
+    CustomerActionTypes.EDIT_CUSTOMER_DETAILS_START,
+    editCustomerDetails
+  );
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onCustomerRegister),
-    call(onSignOutStart)
+    call(onSignOutStart),
+    call(onEditCustomerDetailsStart)
   ]);
 }

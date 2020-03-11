@@ -10,6 +10,7 @@ const customerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CustomerActionTypes.SIGN_IN_SUCCESS:
     case CustomerActionTypes.CUSTOMER_REGISTER_SUCCESS:
+    case CustomerActionTypes.EDIT_CUSTOMER_DETAILS_SUCCESS:
       return {
         ...state,
         currentCustomer: action.payload,
@@ -32,9 +33,9 @@ const customerReducer = (state = INITIAL_STATE, action) => {
         loginError: action.payload
       };
     case CustomerActionTypes.CUSTOMER_REGISTER_FAILURE:
+    case CustomerActionTypes.EDIT_CUSTOMER_DETAILS_FAILURE:
       return {
         ...state,
-        currentCustomer: null,
         registerError: action.payload,
         loginError: {}
       };

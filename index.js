@@ -20,6 +20,7 @@ const productRoutes = require("./routes/productRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const customerAddressRoutes = require("./routes/customerAddressRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const customerRoutes = require("./routes/customerRoutes");
 
 app.use("/api/auth", customerAuthRoutes);
 app.use("/api/admin/auth", adminAuthRoutes);
@@ -27,6 +28,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/addresses", customerAddressRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/customer", customerRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);

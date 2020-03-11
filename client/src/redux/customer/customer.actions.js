@@ -46,3 +46,18 @@ export const customerRegisterFailure = error => ({
   type: CustomerActionTypes.CUSTOMER_REGISTER_FAILURE,
   payload: error
 });
+
+export const editCustomerDetailsStart = (customerId, customerDetails) => ({
+  type: CustomerActionTypes.EDIT_CUSTOMER_DETAILS_START,
+  payload: { customerId, customerDetails }
+});
+
+export const editCustomerDetailsSuccess = customerDetails => ({
+  type: CustomerActionTypes.EDIT_CUSTOMER_DETAILS_SUCCESS,
+  payload: customerDetails
+});
+
+export const editCustomerDetailsFailure = error => ({
+  type: CustomerActionTypes.EDIT_CUSTOMER_DETAILS_FAILURE,
+  payload: error
+});
