@@ -8,7 +8,11 @@ const router = express.Router();
 
 router.put("/:customerId", isAuth, customerController.updateCustomer);
 
-router.put("/reset-password", isAuth, customerController.resetPassword);
+router.post("/reset-password", customerController.resetPasswordRequest);
+
+router.get("/reset-password", customerController.validateResetToken);
+
+router.put("/reset-password", customerController.updatePassword);
 
 router.delete("/customerId", isAuth, customerController.deleteCustomer);
 

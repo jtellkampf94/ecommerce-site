@@ -99,7 +99,7 @@ module.exports = validateCustomerRegister = data => {
     if (
       !(
         (gender !== "male" && gender === "female") ||
-        (gender !== "female" && gender == "male")
+        (gender !== "female" && gender === "male")
       )
     ) {
       errors.gender = "Please enter your preference";

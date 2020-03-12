@@ -26,6 +26,12 @@ const customerSchema = new mongoose.Schema(
     dateOfBirth: {
       type: Date,
       required: true
+    },
+    resetToken: {
+      type: String
+    },
+    resetTokenExpiration: {
+      type: Date
     }
   },
   { timestamps: true }
