@@ -61,3 +61,22 @@ export const editCustomerDetailsFailure = error => ({
   type: CustomerActionTypes.EDIT_CUSTOMER_DETAILS_FAILURE,
   payload: error
 });
+
+export const resetCustomerPasswordRequestStart = email => ({
+  type: CustomerActionTypes.RESET_CUSTOMER_PASSWORD_REQUEST_START,
+  payload: email
+});
+
+export const resetCustomerPasswordRequestSuccess = message => ({
+  type: CustomerActionTypes.RESET_CUSTOMER_PASSWORD_REQUEST_SUCCESS,
+  payload: message
+});
+
+export const resetCustomerPasswordRequestFailure = error => ({
+  type: CustomerActionTypes.RESET_CUSTOMER_PASSWORD_REQUEST_FAILURE,
+  payload: error
+});
+
+export const clearResetPasswordRequest = () => ({
+  type: CustomerActionTypes.CLEAR_RESET_PASSWORD_REQUEST
+});

@@ -23,7 +23,11 @@ const LogInAndRegisterPage = ({
   return (
     <div className="log-in-and-register">
       <h1>Join or login and continue</h1>
-      <LogIn emailSignInStart={emailSignInStart} errors={customerLoginErrors} />
+      <LogIn
+        customer
+        emailSignInStart={emailSignInStart}
+        errors={customerLoginErrors}
+      />
       <Register register={register} errors={customerRegisterErrors} />
     </div>
   );

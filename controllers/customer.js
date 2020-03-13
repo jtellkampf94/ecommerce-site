@@ -119,7 +119,7 @@ exports.resetPasswordRequest = async (req, res, next) => {
     if (!customer)
       return res
         .status(401)
-        .json({ email: "No account with this email exists." });
+        .json({ resetPasswordEmail: "No account with this email exists." });
 
     const buffer = await crypto.randomBytes(33);
     const token = buffer.toString("hex");
@@ -128,7 +128,7 @@ exports.resetPasswordRequest = async (req, res, next) => {
     customer.resetTokenExpiration = Date.now() + 3600000;
     await customer.save();
 
-    transporter.sendMail({
+    await transporter.sendMail({
       to: customer.email,
       from: "ecommerce-site@shop.com",
       subject: "Password reset",
@@ -139,7 +139,7 @@ exports.resetPasswordRequest = async (req, res, next) => {
     });
 
     res.status(200).json({
-      password:
+      passwordReset:
         "We have sent you an email that provides you a link to reset your password"
     });
   } catch (err) {

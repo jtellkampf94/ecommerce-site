@@ -13,7 +13,9 @@ import {
   customerRegisterFailure,
   customerRegisterSuccess,
   editCustomerDetailsSuccess,
-  editCustomerDetailsFailure
+  editCustomerDetailsFailure,
+  resetCustomerPasswordRequestSuccess,
+  resetCustomerPasswordRequestFailure
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
@@ -105,6 +107,18 @@ export function* editCustomerDetails({ payload }) {
   }
 }
 
+export function* resetCustomerPasswordRequest({ payload: email }) {
+  try {
+    const { data } = yield axios.post("/api/customer/reset-password", {
+      email
+    });
+    yield put(resetCustomerPasswordRequestSuccess(data));
+    history.push("/");
+  } catch (error) {
+    yield put(resetCustomerPasswordRequestFailure(error.response.data));
+  }
+}
+
 //--------------WATCHER-GENERATORS--------------//
 
 export function* onCheckUserSession() {
@@ -136,12 +150,20 @@ export function* onEditCustomerDetailsStart() {
   );
 }
 
+export function* onResetCustomerPasswordRequestStart() {
+  yield takeLatest(
+    CustomerActionTypes.RESET_CUSTOMER_PASSWORD_REQUEST_START,
+    resetCustomerPasswordRequest
+  );
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onCustomerRegister),
     call(onSignOutStart),
-    call(onEditCustomerDetailsStart)
+    call(onEditCustomerDetailsStart),
+    call(onResetCustomerPasswordRequestStart)
   ]);
 }

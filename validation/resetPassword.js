@@ -11,14 +11,14 @@ exports.validateEmail = data => {
   email = !isEmpty(email) ? email : "";
 
   if (typeof email !== "string") {
-    errors.email = "Please enter valid email";
+    errors.resetPasswordEmail = "Please enter valid email";
   } else {
     if (!Validator.isEmail(email)) {
-      errors.email = "Email is invalid";
+      errors.resetPasswordEmail = "Email is invalid";
     }
 
     if (Validator.isEmpty(email)) {
-      errors.email = "Please enter your email";
+      errors.resetPasswordEmail = "Please enter your email";
     }
   }
 

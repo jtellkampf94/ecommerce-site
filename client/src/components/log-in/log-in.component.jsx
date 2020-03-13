@@ -1,10 +1,25 @@
 import React, { useState } from "react";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import ErrorMessage from "../error-message/error-message.component";
+import ResetPasswordModal from "../reset-password-modal/reset-password-modal.component";
 
-const LogIn = ({ emailSignInStart, errors = {} }) => {
+import { closeModal, showModal } from "../../redux/ui/ui.actions";
+import { selectViewModal } from "../../redux/ui/ui.selectors";
+import { resetCustomerPasswordRequestStart } from "../../redux/customer/customer.actions";
+
+const LogIn = ({
+  customer,
+  emailSignInStart,
+  errors,
+  closeModal,
+  showModal,
+  viewModal,
+  resetPassword
+}) => {
   const [credentials, setUserCredentials] = useState({
     email: "",
     password: ""
@@ -50,6 +65,14 @@ const LogIn = ({ emailSignInStart, errors = {} }) => {
         {errors.emailOrPassword && (
           <ErrorMessage message={errors.emailOrPassword} />
         )}
+        {customer && <div onClick={showModal}>Forgot password?</div>}
+        {viewModal && (
+          <ResetPasswordModal
+            resetPassword={resetPassword}
+            errors={errors}
+            closeModal={closeModal}
+          />
+        )}
         <div className="buttons">
           <CustomButton type="submit"> Log in </CustomButton>
         </div>
@@ -58,4 +81,14 @@ const LogIn = ({ emailSignInStart, errors = {} }) => {
   );
 };
 
-export default LogIn;
+const mapStateToProps = createStructuredSelector({
+  viewModal: selectViewModal
+});
+
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(closeModal()),
+  showModal: () => dispatch(showModal()),
+  resetPassword: email => dispatch(resetCustomerPasswordRequestStart(email))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
