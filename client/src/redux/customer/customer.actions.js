@@ -86,11 +86,6 @@ export const validateResetPasswordTokenStart = token => ({
   payload: token
 });
 
-export const validateResetPasswordTokenSuccess = customer => ({
-  type: CustomerActionTypes.VALIDATE_RESET_PASSWORD_TOKEN_SUCCESS,
-  payload: customer
-});
-
 export const validateResetPasswordTokenFailure = error => ({
   type: CustomerActionTypes.VALIDATE_RESET_PASSWORD_TOKEN_FAILURE,
   payload: error
@@ -108,5 +103,15 @@ export const resetPasswordSuccess = customer => ({
 
 export const resetPasswordFailure = error => ({
   type: CustomerActionTypes.RESET_PASSWORD_FAILURE,
+  payload: error
+});
+
+export const deleteAccountStart = customerId => ({
+  type: CustomerActionTypes.DELETE_ACCOUNT_START,
+  payload: customerId
+});
+
+export const deleteAccountFailure = error => ({
+  type: CustomerActionTypes.DELETE_ACCOUNT_FAILURE,
   payload: error
 });

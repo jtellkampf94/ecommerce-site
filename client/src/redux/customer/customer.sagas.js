@@ -17,10 +17,10 @@ import {
   editCustomerDetailsFailure,
   resetCustomerPasswordRequestSuccess,
   resetCustomerPasswordRequestFailure,
-  validateResetPasswordTokenSuccess,
   validateResetPasswordTokenFailure,
   resetPasswordSuccess,
-  resetPasswordFailure
+  resetPasswordFailure,
+  deleteAccountFailure
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
@@ -156,6 +156,17 @@ export function* resetPassword({
     yield put(resetPasswordFailure(error.response.data));
   }
 }
+
+export function* deleteAccount({ payload: customerId }) {
+  try {
+    yield axios.delete(`/api/customer/${customerId}`);
+    yield put(closeModal());
+    yield signOut();
+  } catch (error) {
+    yield put(deleteAccountFailure(error.response.data));
+  }
+}
+
 //--------------WATCHER-GENERATORS--------------//
 
 export function* onCheckUserSession() {
@@ -205,6 +216,10 @@ export function* onResetPasswordStart() {
   yield takeLatest(CustomerActionTypes.RESET_PASSWORD_START, resetPassword);
 }
 
+export function* onDeleteAccountStart() {
+  yield takeLatest(CustomerActionTypes.DELETE_ACCOUNT_START, deleteAccount);
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
@@ -214,6 +229,7 @@ export function* customerSagas() {
     call(onEditCustomerDetailsStart),
     call(onResetCustomerPasswordRequestStart),
     call(onValidateResetPasswordTokenStart),
-    call(onResetPasswordStart)
+    call(onResetPasswordStart),
+    call(onDeleteAccountStart)
   ]);
 }

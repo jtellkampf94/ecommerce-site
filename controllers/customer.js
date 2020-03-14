@@ -81,7 +81,7 @@ exports.updateCustomer = async (req, res, next) => {
   }
 };
 
-exports.deleteCustomer = async (req, res, next) => {
+exports.deleteAccount = async (req, res, next) => {
   try {
     if (req.user._id !== req.params.customerId)
       return res
