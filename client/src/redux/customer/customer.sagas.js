@@ -5,6 +5,7 @@ import history from "../../utils/history";
 
 import setAuthToken from "../../utils/setAuthToken";
 import CustomerActionTypes from "./customer.types";
+import { closeModal } from "../ui/ui.actions";
 import {
   signInFailure,
   signInSuccess,
@@ -15,7 +16,11 @@ import {
   editCustomerDetailsSuccess,
   editCustomerDetailsFailure,
   resetCustomerPasswordRequestSuccess,
-  resetCustomerPasswordRequestFailure
+  resetCustomerPasswordRequestFailure,
+  validateResetPasswordTokenSuccess,
+  validateResetPasswordTokenFailure,
+  resetPasswordSuccess,
+  resetPasswordFailure
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
@@ -112,6 +117,7 @@ export function* resetCustomerPasswordRequest({ payload: email }) {
     const { data } = yield axios.post("/api/customer/reset-password", {
       email
     });
+    yield put(closeModal());
     yield put(resetCustomerPasswordRequestSuccess(data));
     history.push("/");
   } catch (error) {
@@ -119,6 +125,37 @@ export function* resetCustomerPasswordRequest({ payload: email }) {
   }
 }
 
+export function* validateResetPasswordToken({ payload: token }) {
+  try {
+    yield axios.get(`/api/customer/reset-password/${token}`);
+  } catch (error) {
+    yield put(validateResetPasswordTokenFailure(error.response.data));
+  }
+}
+
+export function* resetPassword({
+  payload: { token, password, confirmPassword }
+}) {
+  try {
+    if (password !== confirmPassword) {
+      yield put(
+        resetPasswordFailure({ confirmPassword: "Passwords don't match" })
+      );
+    } else {
+      const { data: customer } = yield axios.put(
+        "/api/customer/reset-password",
+        {
+          token,
+          password
+        }
+      );
+      yield put(resetPasswordSuccess(customer));
+      history.push("/");
+    }
+  } catch (error) {
+    yield put(resetPasswordFailure(error.response.data));
+  }
+}
 //--------------WATCHER-GENERATORS--------------//
 
 export function* onCheckUserSession() {
@@ -157,6 +194,17 @@ export function* onResetCustomerPasswordRequestStart() {
   );
 }
 
+export function* onValidateResetPasswordTokenStart() {
+  yield takeLatest(
+    CustomerActionTypes.VALIDATE_RESET_PASSWORD_TOKEN_START,
+    validateResetPasswordToken
+  );
+}
+
+export function* onResetPasswordStart() {
+  yield takeLatest(CustomerActionTypes.RESET_PASSWORD_START, resetPassword);
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
@@ -164,6 +212,8 @@ export function* customerSagas() {
     call(onCustomerRegister),
     call(onSignOutStart),
     call(onEditCustomerDetailsStart),
-    call(onResetCustomerPasswordRequestStart)
+    call(onResetCustomerPasswordRequestStart),
+    call(onValidateResetPasswordTokenStart),
+    call(onResetPasswordStart)
   ]);
 }

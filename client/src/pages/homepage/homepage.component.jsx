@@ -13,15 +13,16 @@ import { clearResetPasswordRequest } from "../../redux/customer/customer.actions
 const HomePage = ({
   currentCustomer,
   clearResetPasswordRequest,
+  showModal,
   closeModal,
   viewModal
 }) => {
   useEffect(() => {
     if (currentCustomer && currentCustomer.passwordReset) {
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!SS");
+      showModal();
       clearResetPasswordRequest();
     }
-  }, [currentCustomer]);
+  }, [currentCustomer !== null && currentCustomer.passwordReset]);
 
   return (
     <div className="home-page">
@@ -39,6 +40,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(closeModal()),
+  showModal: () => dispatch(showModal()),
   clearResetPasswordRequest: () => dispatch(clearResetPasswordRequest())
 });
 

@@ -6,14 +6,14 @@ const isAuth = require("../middleware/isAuth");
 
 const router = express.Router();
 
-router.put("/:customerId", isAuth, customerController.updateCustomer);
-
 router.post("/reset-password", customerController.resetPasswordRequest);
 
-router.get("/reset-password", customerController.validateResetToken);
+router.get("/reset-password/:token", customerController.validateResetToken);
 
 router.put("/reset-password", customerController.updatePassword);
 
 router.delete("/customerId", isAuth, customerController.deleteCustomer);
+
+router.put("/:customerId", isAuth, customerController.updateCustomer);
 
 module.exports = router;

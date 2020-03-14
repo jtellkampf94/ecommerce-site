@@ -151,7 +151,9 @@ exports.resetPasswordRequest = async (req, res, next) => {
 
 exports.validateResetToken = async (req, res, next) => {
   try {
-    const { isValid, errors, sanitizedData } = validateToken(req.body);
+    const { isValid, errors, sanitizedData } = validateToken({
+      token: req.params.token
+    });
 
     if (!isValid) return res.status(422).json(errors);
 
@@ -163,11 +165,13 @@ exports.validateResetToken = async (req, res, next) => {
     if (!customer)
       return res.status(403).json({
         token:
-          "Token you have provided is expired or invalid. Please try again."
+          "You either need to provide a token or the token you have provided is expired or invalid. Please try process again."
       });
 
-    const fetchedCustomer = { ...customer };
+    const fetchedCustomer = { ...customer.toObject() };
     delete fetchedCustomer.password;
+    delete fetchedCustomer.resetToken;
+    delete fetchedCustomer.resetTokenExpiration;
     return res.status(200).json(fetchedCustomer);
   } catch (err) {
     console.log(err);
@@ -195,7 +199,9 @@ exports.updatePassword = async (req, res, next) => {
           "Token you have provided is expired or invalid. Please try again."
       });
 
+    customer.toObject();
     customer.password = sanitizedData.password;
+    customer.resetTokenExpiration = Date.now();
     await customer.save();
 
     const updatedCustomer = { ...customer };
