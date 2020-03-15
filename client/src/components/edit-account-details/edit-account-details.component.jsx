@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 
-import ErrorMessage from "../../components/error-message/error-message.component";
+import ErrorMessage from "../error-message/error-message.component";
+import EditPassword from "../edit-password/edit-password.component";
 
-const EditAccountDetails = ({ accountDetails, editAccount, errors }) => {
+const EditAccountDetails = ({
+  accountDetails,
+  editAccount,
+  errors,
+  showModal,
+  viewModal,
+  closeModal
+}) => {
   const [accountFields, setAccountFields] = useState({
     firstName: "",
     lastName: "",
@@ -107,6 +115,14 @@ const EditAccountDetails = ({ accountDetails, editAccount, errors }) => {
             onChange={handleChange}
           />
           {errors.dateOfBirth && <ErrorMessage message={errors.dateOfBirth} />}
+        </div>
+        <div>
+          <button type="button" onClick={() => showModal()}>
+            EDIT PASSWORD
+          </button>
+          {viewModal && (
+            <EditPassword editPassword={() => {}} closeModal={closeModal} />
+          )}
         </div>
         <button type="submit">SUBMIT</button>
       </form>

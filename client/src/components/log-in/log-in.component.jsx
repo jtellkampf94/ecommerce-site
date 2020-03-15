@@ -65,7 +65,7 @@ const LogIn = ({
         {errors.emailOrPassword && (
           <ErrorMessage message={errors.emailOrPassword} />
         )}
-        {customer && <div onClick={showModal}>Forgot password?</div>}
+        {customer && <div onClick={() => showModal()}>Forgot password?</div>}
         {viewModal && (
           <ResetPasswordModal
             resetPassword={resetPassword}

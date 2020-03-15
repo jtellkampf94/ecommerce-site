@@ -1,6 +1,6 @@
 import uiActionTypes from "./ui.types";
 
-export const showModal = id => ({
+export const showModal = (id = null) => ({
   type: uiActionTypes.SHOW_MODAL,
   payload: id
 });

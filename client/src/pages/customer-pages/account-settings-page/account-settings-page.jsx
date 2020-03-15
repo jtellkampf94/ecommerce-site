@@ -15,7 +15,7 @@ import {
   editCustomerDetailsStart,
   deleteAccountStart
 } from "../../../redux/customer/customer.actions";
-import { selectViewModal } from "../../../redux/ui/ui.selectors";
+import { selectViewModal, selectId } from "../../../redux/ui/ui.selectors";
 import { showModal, closeModal } from "../../../redux/ui/ui.actions";
 import ErrorMessage from "../../../components/error-message/error-message.component";
 
@@ -27,7 +27,8 @@ const AccountSettingsPage = ({
   showModal,
   closeModal,
   deleteAccount,
-  deleteAccountErrors
+  deleteAccountErrors,
+  modalId
 }) => {
   const [editAccountDetails, toggleEditAccountDetails] = useState(false);
 
@@ -38,6 +39,9 @@ const AccountSettingsPage = ({
   const handleClick = () => {
     toggleEditAccountDetails(!editAccountDetails);
   };
+
+  const id = "deleteAccount";
+
   return (
     <div className="settings">
       <h1>Settings</h1>
@@ -48,6 +52,9 @@ const AccountSettingsPage = ({
               accountDetails={currentCustomer}
               editAccount={editCustomer}
               errors={editAccountErrors}
+              showModal={showModal}
+              closeModal={closeModal}
+              viewModal={viewModal}
             />
           ) : (
             <AccountDetails account={currentCustomer} />
@@ -56,15 +63,15 @@ const AccountSettingsPage = ({
           <button type="button" onClick={handleClick}>
             {editAccountDetails ? "BACK" : "EDIT"}
           </button>
-          <button type="button" onClick={showModal}>
+          <button type="button" onClick={() => showModal(id)}>
             DELETE ACCOUNT
           </button>
-          {viewModal && (
+          {viewModal && modalId === id ? (
             <DeleteAccount
               deleteAccount={() => deleteAccount(currentCustomer._id)}
               closeModal={closeModal}
             />
-          )}
+          ) : null}
           {deleteAccountErrors.error && (
             <ErrorMessage message={deleteAccountErrors.error} />
           )}
@@ -78,13 +85,14 @@ const mapStateToProps = createStructuredSelector({
   currentCustomer: selectCurrentCustomer,
   editAccountErrors: selectCustomerRegisterErrors,
   deleteAccountErrors: selectCustomerLoginErrors,
-  viewModal: selectViewModal
+  viewModal: selectViewModal,
+  modalId: selectId
 });
 
 const mapDispatchToProps = dispatch => ({
   editCustomer: (customerId, customerdetails) =>
     dispatch(editCustomerDetailsStart(customerId, customerdetails)),
-  showModal: () => dispatch(showModal()),
+  showModal: id => dispatch(showModal(id)),
   closeModal: () => dispatch(closeModal()),
   deleteAccount: customerId => dispatch(deleteAccountStart(customerId))
 });

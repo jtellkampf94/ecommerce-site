@@ -8,7 +8,11 @@ const INITIAL_STATE = {
 const uiReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case uiActionTypes.SHOW_MODAL:
-      return { ...state, viewModal: true, id: action.payload };
+      return {
+        ...state,
+        viewModal: true,
+        id: action.payload
+      };
     case uiActionTypes.CLOSE_MODAL:
       return { ...state, viewModal: false, id: null };
     default:
