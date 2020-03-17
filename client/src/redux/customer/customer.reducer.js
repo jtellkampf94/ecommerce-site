@@ -3,7 +3,8 @@ import CustomerActionTypes from "./customer.types";
 const INITIAL_STATE = {
   currentCustomer: null,
   loginError: {},
-  registerError: {}
+  registerError: {},
+  successMessage: {}
 };
 
 const customerReducer = (state = INITIAL_STATE, action) => {
@@ -17,7 +18,8 @@ const customerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentCustomer: action.payload,
         registerError: {},
-        loginError: {}
+        loginError: {},
+        successMessage: {}
       };
     case CustomerActionTypes.SIGN_OUT_SUCCESS:
     case CustomerActionTypes.CLEAR_RESET_PASSWORD_REQUEST:
@@ -25,7 +27,8 @@ const customerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentCustomer: null,
         registerError: {},
-        loginError: {}
+        loginError: {},
+        successMessage: {}
       };
     case CustomerActionTypes.SIGN_IN_FAILURE:
     case CustomerActionTypes.SIGN_OUT_FAILURE:
@@ -37,14 +40,24 @@ const customerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentCustomer: null,
         registerError: {},
-        loginError: action.payload
+        loginError: action.payload,
+        successMessage: {}
       };
     case CustomerActionTypes.CUSTOMER_REGISTER_FAILURE:
     case CustomerActionTypes.EDIT_CUSTOMER_DETAILS_FAILURE:
+    case CustomerActionTypes.EDIT_PASSWORD_FAILURE:
       return {
         ...state,
         registerError: action.payload,
-        loginError: {}
+        loginError: {},
+        successMessage: {}
+      };
+    case CustomerActionTypes.EDIT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        registerError: {},
+        loginError: {},
+        successMessage: action.payload
       };
     default:
       return state;

@@ -20,7 +20,9 @@ import {
   validateResetPasswordTokenFailure,
   resetPasswordSuccess,
   resetPasswordFailure,
-  deleteAccountFailure
+  deleteAccountFailure,
+  editPasswordFailure,
+  editPasswordSuccess
 } from "./customer.actions";
 
 //--------------WORKER-GENERATORS--------------//
@@ -167,6 +169,33 @@ export function* deleteAccount({ payload: customerId }) {
   }
 }
 
+export function* editPassword({
+  payload: { customerId, oldPassword, newPassword, confirmNewPassword }
+}) {
+  try {
+    if (newPassword !== confirmNewPassword) {
+      yield put(
+        editPasswordFailure({
+          confirmNewPassword:
+            "New password and confirm new password don't match"
+        })
+      );
+    } else {
+      yield axios.put(`/api/customer/change-password/${customerId}`, {
+        oldPassword,
+        newPassword
+      });
+      yield put(
+        editPasswordSuccess({
+          editPassword: "You have successfully changed your password"
+        })
+      );
+    }
+  } catch (error) {
+    yield put(editPasswordFailure(error.response.data));
+  }
+}
+
 //--------------WATCHER-GENERATORS--------------//
 
 export function* onCheckUserSession() {
@@ -220,6 +249,10 @@ export function* onDeleteAccountStart() {
   yield takeLatest(CustomerActionTypes.DELETE_ACCOUNT_START, deleteAccount);
 }
 
+export function* onEditCustomerPasswordStart() {
+  yield takeLatest(CustomerActionTypes.EDIT_PASSWORD_START, editPassword);
+}
+
 export function* customerSagas() {
   yield all([
     call(onEmailSignInStart),
@@ -230,6 +263,7 @@ export function* customerSagas() {
     call(onResetCustomerPasswordRequestStart),
     call(onValidateResetPasswordTokenStart),
     call(onResetPasswordStart),
-    call(onDeleteAccountStart)
+    call(onDeleteAccountStart),
+    call(onEditCustomerPasswordStart)
   ]);
 }

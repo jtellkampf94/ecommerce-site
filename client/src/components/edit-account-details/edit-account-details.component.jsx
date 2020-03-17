@@ -10,7 +10,9 @@ const EditAccountDetails = ({
   errors,
   showModal,
   viewModal,
-  closeModal
+  closeModal,
+  editPassword,
+  successMessage
 }) => {
   const [accountFields, setAccountFields] = useState({
     firstName: "",
@@ -120,9 +122,15 @@ const EditAccountDetails = ({
           <button type="button" onClick={() => showModal()}>
             EDIT PASSWORD
           </button>
-          {viewModal && (
-            <EditPassword editPassword={() => {}} closeModal={closeModal} />
-          )}
+          {viewModal && accountDetails ? (
+            <EditPassword
+              editPassword={editPassword}
+              customerId={accountDetails._id}
+              closeModal={closeModal}
+              errors={errors}
+              successMessage={successMessage}
+            />
+          ) : null}
         </div>
         <button type="submit">SUBMIT</button>
       </form>

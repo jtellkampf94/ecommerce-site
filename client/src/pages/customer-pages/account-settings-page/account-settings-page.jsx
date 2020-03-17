@@ -9,11 +9,13 @@ import DeleteAccount from "../../../components/delete-account/delete-account.com
 import {
   selectCurrentCustomer,
   selectCustomerRegisterErrors,
-  selectCustomerLoginErrors
+  selectCustomerLoginErrors,
+  selectSuccessMessage
 } from "../../../redux/customer/customer.selectors";
 import {
   editCustomerDetailsStart,
-  deleteAccountStart
+  deleteAccountStart,
+  editPasswordStart
 } from "../../../redux/customer/customer.actions";
 import { selectViewModal, selectId } from "../../../redux/ui/ui.selectors";
 import { showModal, closeModal } from "../../../redux/ui/ui.actions";
@@ -28,7 +30,9 @@ const AccountSettingsPage = ({
   closeModal,
   deleteAccount,
   deleteAccountErrors,
-  modalId
+  modalId,
+  editPassword,
+  successMessage
 }) => {
   const [editAccountDetails, toggleEditAccountDetails] = useState(false);
 
@@ -55,6 +59,8 @@ const AccountSettingsPage = ({
               showModal={showModal}
               closeModal={closeModal}
               viewModal={viewModal}
+              editPassword={editPassword}
+              successMessage={successMessage}
             />
           ) : (
             <AccountDetails account={currentCustomer} />
@@ -86,7 +92,8 @@ const mapStateToProps = createStructuredSelector({
   editAccountErrors: selectCustomerRegisterErrors,
   deleteAccountErrors: selectCustomerLoginErrors,
   viewModal: selectViewModal,
-  modalId: selectId
+  modalId: selectId,
+  successMessage: selectSuccessMessage
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -94,7 +101,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editCustomerDetailsStart(customerId, customerdetails)),
   showModal: id => dispatch(showModal(id)),
   closeModal: () => dispatch(closeModal()),
-  deleteAccount: customerId => dispatch(deleteAccountStart(customerId))
+  deleteAccount: customerId => dispatch(deleteAccountStart(customerId)),
+  editPassword: (customerId, passwords) =>
+    dispatch(editPasswordStart(customerId, passwords))
 });
 
 export default connect(

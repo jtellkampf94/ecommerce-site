@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const Customer = require("../models/Customer");
 const keys = require("../config/keys");
 const validateCustomer = require("../validation/customer");
-const validatePasswords = require('../validation/changePassword')
+const validatePasswords = require("../validation/changePassword");
 const {
   validateEmail,
   validateToken,
@@ -218,9 +218,9 @@ exports.updatePassword = async (req, res, next) => {
 
 exports.changePassword = async (req, res, next) => {
   try {
-    const {isValid, errors, sanitizedData} = validatePasswords(req.body)
+    const { isValid, errors, sanitizedData } = validatePasswords(req.body);
 
-    if(!isValid) return res.status(422).errors(errors)
+    if (!isValid) return res.status(422).json(errors);
 
     const customer = await Customer.findById(req.params.customerId);
 
@@ -233,19 +233,25 @@ exports.changePassword = async (req, res, next) => {
       return res
         .status(403)
         .json({ error: "You are not authorized to perform this operation" });
-    
-    const isMatch = await bcrypt.compare(sanitizedData.oldPassword, customer.password)
 
-    if(!isMatch) return res.status(422).json({oldPassword: 'Your old password is incorrect'})
+    const isMatch = await bcrypt.compare(
+      sanitizedData.oldPassword,
+      customer.password
+    );
 
-    customer.toObject()
-    customer.password = sanitizedData.newPassword
-    await customer.save()
+    if (!isMatch)
+      return res
+        .status(422)
+        .json({ oldPassword: "Your old password is incorrect" });
 
-    const updatedCustomer = {...customer}
-    delete updatedCustomer.password
+    customer.toObject();
+    customer.password = sanitizedData.newPassword;
+    await customer.save();
 
-    return res.status(200).json(updatedCustomer)   
+    const updatedCustomer = { ...customer.toObject() };
+    delete updatedCustomer.password;
+
+    return res.status(200).json(updatedCustomer);
   } catch (err) {
     console.log(err);
     if (err.name === "CastError")

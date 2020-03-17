@@ -115,3 +115,23 @@ export const deleteAccountFailure = error => ({
   type: CustomerActionTypes.DELETE_ACCOUNT_FAILURE,
   payload: error
 });
+
+export const editPasswordStart = (customerId, passwords) => ({
+  type: CustomerActionTypes.EDIT_PASSWORD_START,
+  payload: {
+    customerId,
+    oldPassword: passwords.oldPassword,
+    newPassword: passwords.newPassword,
+    confirmNewPassword: passwords.confirmNewPassword
+  }
+});
+
+export const editPasswordSuccess = message => ({
+  type: CustomerActionTypes.EDIT_PASSWORD_SUCCESS,
+  payload: message
+});
+
+export const editPasswordFailure = error => ({
+  type: CustomerActionTypes.EDIT_PASSWORD_FAILURE,
+  payload: error
+});

@@ -16,3 +16,8 @@ export const selectCustomerRegisterErrors = createSelector(
   [selectCustomer],
   customer => customer.registerError
 );
+
+export const selectSuccessMessage = createSelector(
+  [selectCustomer],
+  customer => customer.successMessage
+);
