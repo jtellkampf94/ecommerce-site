@@ -95,7 +95,7 @@ exports.getProduct = async (req, res, next) => {
     return res.status(200).json(product);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No product with this ID is found" });
@@ -142,7 +142,7 @@ exports.deleteProduct = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No product with this ID is found" });
@@ -208,7 +208,7 @@ exports.updateProduct = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No product with this ID is found" });

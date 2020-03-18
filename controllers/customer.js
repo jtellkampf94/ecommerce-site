@@ -74,7 +74,7 @@ exports.updateCustomer = async (req, res, next) => {
     return res.status(200).json({ updatedCustomer, token });
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No customer with this ID is found" });
@@ -101,7 +101,7 @@ exports.deleteAccount = async (req, res, next) => {
     return res.status(200).json(customer);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No customer with this ID is found" });
@@ -254,7 +254,7 @@ exports.changePassword = async (req, res, next) => {
     return res.status(200).json(updatedCustomer);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No customer with this ID is found" });

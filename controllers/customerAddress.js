@@ -30,7 +30,7 @@ exports.getCustomerAddress = async (req, res, next) => {
     res.status(200).json(address);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No address with this ID was found" });
@@ -82,7 +82,7 @@ exports.updateCustomerAddress = async (req, res, next) => {
     return res.status(200).json(updatedAddress);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No address with this ID was found" });
@@ -109,7 +109,7 @@ exports.deleteCustomerAddress = async (req, res, next) => {
     return res.status(200).json(address);
   } catch (err) {
     console.log(err);
-    if (err.name === "CastError")
+    if (err.name === "TypeError" || "CastError")
       return res
         .status(400)
         .json({ error: "No address with this ID was found" });
