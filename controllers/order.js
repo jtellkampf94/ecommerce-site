@@ -7,7 +7,7 @@ exports.getOrders = async (req, res, next) => {
       .populate("customerAddress")
       .exec();
 
-    return res.status(200).json({ orders });
+    return res.status(200).json(orders);
   } catch (err) {
     console.log(err);
     const error = new Error();

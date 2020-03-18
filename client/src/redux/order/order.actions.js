@@ -23,3 +23,17 @@ export const processPaymentFailure = error => ({
 export const clearPurchasedOrder = () => ({
   type: orderActionTypes.CLEAR_PURCHASED_ORDER
 });
+
+export const fetchOrdersStart = () => ({
+  type: orderActionTypes.FETCH_ORDERS_START
+});
+
+export const fetchOrdersSuccess = orders => ({
+  type: orderActionTypes.FETCH_ORDERS_SUCCESS,
+  payload: orders
+});
+
+export const fetchOrdersFailure = error => ({
+  type: orderActionTypes.FETCH_ORDERS_FAILURE,
+  payload: error
+});
