@@ -4,15 +4,19 @@ import { connect } from "react-redux";
 
 import OrdersPageItem from "../../../components/orders-page-item/orders-page-item.component";
 
-import { selectOrders } from "../../../redux/order/order.selectors";
+import {
+  selectOrders,
+  selectOrderErrors
+} from "../../../redux/order/order.selectors";
 import { fetchOrdersStart } from "../../../redux/order/order.actions";
 
-const OrdersPage = ({ orders, fetchOrders }) => {
+const OrdersPage = ({ orders, fetchOrders, errors }) => {
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
   return (
     <div className="my-orders">
+      {errors.error && <b>{errors.error}</b>}
       {orders &&
         orders.map(order => <OrdersPageItem key={order._id} order={order} />)}
     </div>
@@ -20,7 +24,8 @@ const OrdersPage = ({ orders, fetchOrders }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  orders: selectOrders
+  orders: selectOrders,
+  errors: selectOrderErrors
 });
 
 const mapDispatchToProps = dispatch => ({

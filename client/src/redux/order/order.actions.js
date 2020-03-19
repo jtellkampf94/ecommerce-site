@@ -37,3 +37,18 @@ export const fetchOrdersFailure = error => ({
   type: orderActionTypes.FETCH_ORDERS_FAILURE,
   payload: error
 });
+
+export const fetchOrderStart = orderId => ({
+  type: orderActionTypes.FETCH_ORDER_START,
+  payload: orderId
+});
+
+export const fetchOrderSuccess = order => ({
+  type: orderActionTypes.FETCH_ORDER_SUCCESS,
+  payload: order
+});
+
+export const fetchOrderFailure = error => ({
+  type: orderActionTypes.FETCH_ORDER_FAILURE,
+  payload: error
+});

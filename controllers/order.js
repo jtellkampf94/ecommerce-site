@@ -22,7 +22,6 @@ exports.getOrder = async (req, res, next) => {
       .populate("customerAddress")
       .exec();
 
-    console.log(order.customer, req.user._id);
     if (order.customer.toString() !== req.user._id)
       return res
         .status(403)

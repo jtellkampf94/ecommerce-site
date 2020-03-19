@@ -12,6 +12,7 @@ const orderReducer = (state = INITIAL_STATE, action) => {
       return { ...state, currentOrder: action.payload, error: {} };
     case orderActionTypes.PROCESS_PAYMENT_FAILURE:
     case orderActionTypes.FETCH_ORDERS_FAILURE:
+    case orderActionTypes.FETCH_ORDER_FAILURE:
       return {
         ...state,
         currentOrder: null,
@@ -28,6 +29,12 @@ const orderReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentOrder: null,
         orders: action.payload,
+        error: {}
+      };
+    case orderActionTypes.FETCH_ORDER_SUCCESS:
+      return {
+        ...state,
+        currentOrder: action.payload,
         error: {}
       };
     default:
