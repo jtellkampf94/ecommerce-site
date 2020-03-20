@@ -1,7 +1,9 @@
 import { takeLatest, put, all, call } from "redux-saga/effects";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 import history from "../../utils/history";
+import setAuthToken from "../../utils/setAuthToken";
 
 import addressActionTypes from "./address.types";
 import { closeModal } from "../ui/ui.actions";
@@ -16,13 +18,22 @@ import {
   deleteCustomerAddressFailure,
   updateCustomerAddressFailure
 } from "./address.actions";
+import { signOut } from "../customer/customer.sagas";
 
 //--------------WORKER-GENERATORS--------------//
 
 export function* fetchAddresses() {
   try {
-    const { data: addresses } = yield axios.get("/api/addresses");
-    yield put(fetchCustomerAddressesSuccess(addresses));
+    const decodedUser = jwtDecode(localStorage.jwtToken);
+    const currentTime = Date.now() / 1000;
+    if (decodedUser.exp < currentTime) {
+      yield signOut();
+    } else {
+      setAuthToken(localStorage.jwtToken);
+
+      const { data: addresses } = yield axios.get("/api/addresses");
+      yield put(fetchCustomerAddressesSuccess(addresses));
+    }
   } catch (error) {
     yield put(fetchCustomerAddressesFailure(error));
   }
